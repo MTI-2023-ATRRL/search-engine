@@ -1,6 +1,7 @@
 package org.mti.hivers;
 
 import org.junit.jupiter.api.Test;
+import org.mti.hivers.provider.Prototype;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -21,13 +22,13 @@ class PrototypeTest {
     @Test
     void shouldBeAbleToCreatePrototypeAndGetAnInstance() {
         var prototype = new Prototype<>(PingService.class, PingService::new);
-        var pingService = prototype.instanceOf();
+        var pingService = prototype.getValue();
         assertEquals(pingService.ping(), "Ping");
     }
 
     @Test
     void shouldBeAbleToCreateMultipleInstanceOfPrototype() {
         var prototype = new Prototype<>(PingService.class, PingService::new);
-        assertNotEquals(prototype.instanceOf(), prototype.instanceOf());
+        assertNotEquals(prototype.getValue(), prototype.getValue());
     }
 }

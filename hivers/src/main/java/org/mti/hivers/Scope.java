@@ -1,16 +1,16 @@
 package org.mti.hivers;
 
+import org.mti.hivers.provider.Provider;
+import org.mti.hivers.provider.Singleton;
+
 import java.util.HashMap;
 import java.util.Map;
-import java.util.function.Supplier;
 
 public class Scope {
-    Map<Class<Object>, Singleton> singletonProviders;
-    Map<Class<Object>, Prototype> prototypeProviders;
+    Map<Class<Object>, Provider> providers;
 
     Scope() {
-        singletonProviders = new HashMap<>();
-        prototypeProviders = new HashMap<>();
+        providers = new HashMap<>();
     }
 
 }

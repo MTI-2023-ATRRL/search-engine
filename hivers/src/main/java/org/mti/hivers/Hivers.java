@@ -1,5 +1,9 @@
 package org.mti.hivers;
 
+import org.mti.hivers.provider.Prototype;
+import org.mti.hivers.provider.Provider;
+import org.mti.hivers.provider.Singleton;
+
 import java.util.*;
 
 public class Hivers {
@@ -10,36 +14,22 @@ public class Hivers {
         scopes.add(new Scope());
     }
 
-    public Hivers provider(Prototype prototype) {
+    public Provider provider(Provider provider) {
         Scope scope = this.getCurrentScope();
-        scope.prototypeProviders.put(prototype.bindingObject, prototype);
-        return this;
-    }
-
-    public Hivers provider(Singleton singleton) {
-        Scope scope = this.getCurrentScope();
-        scope.singletonProviders.put(singleton.bindingObject, singleton);
-        return this;
+        scope.providers.put(provider.getBoundClass(), provider);
+        return provider;
     }
 
     public<T> Optional<T> instanceOf(Class<T> bindingObject) {
         for (var i = this.scopes.size() - 1; i >= 0; i--) {
             Scope scope = this.scopes.get(i);
 
-            if (scope.singletonProviders.containsKey(bindingObject)) {
-                return (Optional<T>) Optional.of(scope.singletonProviders.get(bindingObject).instanceOf());
-            }
-
-            if (scope.prototypeProviders.containsKey(bindingObject)) {
-                return (Optional<T>) Optional.of(scope.prototypeProviders.get(bindingObject).instanceOf());
+            if (scope.providers.containsKey(bindingObject)) {
+                return (Optional<T>) Optional.of(scope.providers.get(bindingObject).getValue());
             }
         }
 
-        return Optional.ofNullable(null);
-    }
-
-    public void withProxies(boolean first, boolean second) {
-        return;
+        return Optional.empty();
     }
 
     public void push(Scope scope) {

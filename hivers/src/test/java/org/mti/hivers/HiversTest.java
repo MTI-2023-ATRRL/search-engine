@@ -2,7 +2,8 @@
 package org.mti.hivers;
 
 import org.junit.jupiter.api.Test;
-import org.mti.hivers.aspect.LoggerAspect;
+import org.mti.hivers.provider.Prototype;
+import org.mti.hivers.provider.Singleton;
 
 import static org.junit.jupiter.api.Assertions.*;
 
