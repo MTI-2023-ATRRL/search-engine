@@ -14,6 +14,20 @@ class HiversTest {
     }
 
     @Test
+    public void shouldBeAbleToCreateHiversAndInsertSingleton() {
+        var hivers = new Hivers();
+        hivers.provider(new Singleton(PingService.class, new PingService()));
+        var pingService = hivers.instanceOf(PingService.class).orElseThrow();
+        assertEquals(pingService.pong(), "Pong");
+    }
+
+    @Test
+    public void shouldNotBeAbleToGetInstanceOfPingServiceIfNotInstanced() {
+        var hivers = new Hivers();
+        assert(hivers.instanceOf(PingService.class).isEmpty());
+    }
+
+    @Test
     public void testBasicHiversUserCase() {
 
         // Init.
@@ -67,12 +81,22 @@ class HiversTest {
 
     public static class PingService implements TestService {
         @Override
-        public void ping() {System.out.println("ping");}
+        public void ping() {
+            System.out.println("ping");
+        }
+
+        public String pong() {
+            return "Pong";
+        }
+
+        ;
     }
 
     public static class PongService implements TestService {
         @Override
-        public void ping() {System.out.println("pong");}
+        public void ping() {
+            System.out.println("pong");
+        }
     }
 
     public static class Nested {
@@ -83,6 +107,4 @@ class HiversTest {
         }
     }
 
-}
-public class HiverTest {
 }
