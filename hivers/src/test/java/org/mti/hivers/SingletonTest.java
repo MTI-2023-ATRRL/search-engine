@@ -22,26 +22,25 @@ class SingletonTest {
     @Test
     void shouldBeAbleToCreateAndRetrieveSingleton() {
         var singleton = new Singleton<>(PingService.class, new PingService());
-        assertNotNull(singleton.instanceOf(PingService.class));
+        assertNotNull(singleton.instanceOf());
     }
 
     @Test
     void shouldBeAbleToCreateAndRetrieveAndUseIt() {
         var singleton = new Singleton<>(PingService.class, new PingService());
-        assertEquals(singleton.instanceOf(PingService.class).orElseThrow().ping(), "Ping");
+        assertEquals(singleton.instanceOf().ping(), "Ping");
     }
 
     @Test
     void shouldBeAbleToCreateWithLamba() {
         var singleton = new Singleton<>(PingService.class, PingService::new);
-        var pingService = singleton.instanceOf(PingService.class);
+        var pingService = singleton.instanceOf();
+        assertNotNull(pingService);
     }
 
     @Test
-    void shouldntCreateMultipleInstance() {
-        var singleton1 = new Singleton<>(PingService.class, new PingService());
-        var singleton2 = new Singleton<>(PingService.class, new PingService());
-
-        assert (singleton1.instanceOf(PingService.class).equals(singleton2.instanceOf(PingService.class)));
+    void shouldOnlyCreateOneInstance() {
+        var singleton = new Singleton<>(PingService.class, PingService::new);
+        assertEquals(singleton.instanceOf(), singleton.instanceOf());
     }
 }

@@ -21,13 +21,13 @@ class PrototypeTest {
     @Test
     void shouldBeAbleToCreatePrototypeAndGetAnInstance() {
         var prototype = new Prototype<>(PingService.class, PingService::new);
-        var pingService = prototype.instanceOf(PingService.class).orElseThrow();
+        var pingService = prototype.instanceOf();
         assertEquals(pingService.ping(), "Ping");
     }
 
     @Test
     void shouldBeAbleToCreateMultipleInstanceOfPrototype() {
         var prototype = new Prototype<>(PingService.class, PingService::new);
-        assertNotEquals(prototype.instanceOf(PingService.class).orElseThrow(), prototype.instanceOf(PingService.class).orElseThrow());
+        assertNotEquals(prototype.instanceOf(), prototype.instanceOf());
     }
 }

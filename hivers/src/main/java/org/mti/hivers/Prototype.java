@@ -6,20 +6,15 @@ import java.util.Optional;
 import java.util.function.Supplier;
 
 public class Prototype<T> {
-    static private Map<Class<Object>, Supplier<Object>> prototypes = new HashMap<>();
-    Prototype(Class<T> bindingClass, Supplier<T> boundSupplier) {
-        if (prototypes.containsKey(bindingClass)) {
-            return;
-        }
+    Supplier<T> boundSupplier;
+    Class<T> bindingClass;
 
-        prototypes.put((Class<Object>) bindingClass, (Supplier<Object>) boundSupplier);
+    Prototype(Class<T> bindingClass, Supplier<T> boundSupplier) {
+        this.boundSupplier = boundSupplier;
+        this.bindingClass = bindingClass;
     }
 
-    public Optional<T> instanceOf(Class<T> bindingClass) {
-        if (prototypes.containsKey(bindingClass)) {
-            return Optional.of((T)prototypes.get(bindingClass).get());
-        }
-
-        return Optional.empty();
+    public T instanceOf() {
+        return this.boundSupplier.get();
     }
 }
