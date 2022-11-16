@@ -30,6 +30,6 @@ jobs:
     - name: Build with Maven
       run: mvn -B package --file hivers/pom.xml
     - name: Maven Package
-      run: mvn -B clean package -DskipTests
+      run: mvn -B clean package --file hivers/pom.xml -DskipTests
     - name: Maven Verify
-      run: mvn -B clean verify 
+      run: mvn -B clean verify --file hivers/pom.xml
