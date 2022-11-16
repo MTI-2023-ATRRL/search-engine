@@ -1,7 +1,6 @@
 /*
 package org.mti.hivers;
 
-
 import org.junit.jupiter.api.Test;
 
 import static fr.epita.hivers.Utils.times;
