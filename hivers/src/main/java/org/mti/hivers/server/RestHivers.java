@@ -10,9 +10,9 @@ import java.util.Map;
 import java.util.function.Function;
 import static spark.Spark.*;
 
-public class RestHivers {
+public class RestHivers implements Extension {
 
-    public enum Method {
+    public enum Method implements Extension.Method {
         GET,
         POST,
         PUT,
@@ -36,7 +36,8 @@ public class RestHivers {
         return this.routes;
     }
 
-    public RestHivers register(RestHivers.Method verb, String path, Function<Context, Context> callback) {
+    @Override
+    public RestHivers register(Extension.Method verb, String path, Function<Context, Context> callback) {
 
         var tuple = new Tuple(path, callback);
         var methodList = routes.get(verb);
@@ -46,7 +47,7 @@ public class RestHivers {
 
         methodList.add(tuple);
 
-        routes.put(verb, methodList);
+        routes.put((Method) verb, methodList);
 
         return this;
     }
