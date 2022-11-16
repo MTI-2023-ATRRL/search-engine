@@ -20,16 +20,16 @@ public class Hivers {
 
     public Provider provider(Provider provider) {
         Scope scope = this.getCurrentScope();
-        scope.providers.put(provider.getBoundClass(), provider);
+        scope.setProvider(provider.getBoundClass(), provider);
         return provider;
     }
 
-    public<T> Optional<T> instanceOf(Class<T> bindingObject) {
+    public<BOUND_TYPE> Optional<BOUND_TYPE> instanceOf(Class<BOUND_TYPE> bindingObject) {
         for (var i = this.scopes.size() - 1; i >= 0; i--) {
             Scope scope = this.scopes.get(i);
 
-            if (scope.providers.containsKey(bindingObject)) {
-                return (Optional<T>) Optional.of(scope.providers.get(bindingObject).getValue());
+            if (scope.getProvider(bindingObject).isPresent()) {
+                return Optional.ofNullable((BOUND_TYPE)scope.getProvider(bindingObject).get().getValue());
             }
         }
 
