@@ -51,11 +51,4 @@ public class Hivers {
     public void register(RestHivers restHivers) {
         extensions.add(restHivers);
     }
-
-    /*
-    public<T> Extension extension(Class<T> bindingObject) {
-        var extension = extensions.stream().findFirst();
-    }
-
-     */
 }
