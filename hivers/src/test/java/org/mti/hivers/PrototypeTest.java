@@ -8,6 +8,6 @@ class PrototypeTest {
 
     @Test
     void shoudBeAbleToCreatePrototype() {
-        
+
     }
 }
