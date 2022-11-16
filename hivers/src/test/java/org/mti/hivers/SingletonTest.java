@@ -9,6 +9,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class SingletonTest {
 
     public static class PingService {
+        PingService() {}
         public String ping() { return "Ping";}
     }
 
@@ -29,6 +30,12 @@ class SingletonTest {
         var singleton = new Singleton<>(PingService.class, new PingService());
         assertEquals(singleton.instanceOf(PingService.class).ping(), "Ping");
     }
+
+//    @Test
+//    void shouldBeAbleToCreateWithLamba() {
+//        var singleton = new Singleton<>(PingService.class, PingService::new);
+//        var pingService = singleton.instanceOf(PingService.class);
+//    }
 
     @Test
     void shouldntCreateMultipleInstance() {
