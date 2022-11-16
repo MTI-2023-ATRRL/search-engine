@@ -9,10 +9,10 @@ import java.util.Optional;
 import java.util.function.Supplier;
 
 public class Prototype<BOUND_TYPE> implements Provider<BOUND_TYPE> {
-    Supplier<BOUND_TYPE> boundSupplier;
-    Class<BOUND_TYPE> bindingObject;
+    private final Supplier<BOUND_TYPE> boundSupplier;
+    private final Class<BOUND_TYPE> bindingObject;
 
-    public Prototype(Class<BOUND_TYPE> bindingObject, Supplier<BOUND_TYPE> boundSupplier) {
+    public Prototype(final Class<BOUND_TYPE> bindingObject, final Supplier<BOUND_TYPE> boundSupplier) {
         this.boundSupplier = boundSupplier;
         this.bindingObject = bindingObject;
     }

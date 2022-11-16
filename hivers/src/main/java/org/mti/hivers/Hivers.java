@@ -24,12 +24,12 @@ public class Hivers {
         return provider;
     }
 
-    public<BOUND_TYPE> Optional<BOUND_TYPE> instanceOf(Class<BOUND_TYPE> bindingObject) {
+    public<OBJECT_TYPE> Optional<OBJECT_TYPE> instanceOf(Class<OBJECT_TYPE> bindingObject) {
         for (var i = this.scopes.size() - 1; i >= 0; i--) {
             Scope scope = this.scopes.get(i);
 
             if (scope.getProvider(bindingObject).isPresent()) {
-                return Optional.ofNullable((BOUND_TYPE)scope.getProvider(bindingObject).get().getValue());
+                return Optional.ofNullable((OBJECT_TYPE)scope.getProvider(bindingObject).get().getValue());
             }
         }
 

@@ -12,17 +12,17 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 
 public class Singleton<BOUND_TYPE> implements Provider<BOUND_TYPE> {
-    Class<BOUND_TYPE> bindingObject;
-    Supplier<BOUND_TYPE> boundSupplier;
+    private final Class<BOUND_TYPE> bindingObject;
+    private final Supplier<BOUND_TYPE> boundSupplier;
 
     private BOUND_TYPE instance;
 
-    public Singleton(Class<BOUND_TYPE> bindingObject, Supplier<BOUND_TYPE> boundSupplier) {
+    public Singleton(final Class<BOUND_TYPE> bindingObject, final Supplier<BOUND_TYPE> boundSupplier) {
        this.bindingObject = bindingObject;
        this.boundSupplier = boundSupplier;
     }
 
-    public Singleton(Class<? extends BOUND_TYPE> bindingObject, BOUND_TYPE boundInstance) {
+    public Singleton(final Class<? extends BOUND_TYPE> bindingObject, final BOUND_TYPE boundInstance) {
         this.bindingObject = (Class<BOUND_TYPE>) bindingObject;
         this.boundSupplier = () -> boundInstance;
     }
