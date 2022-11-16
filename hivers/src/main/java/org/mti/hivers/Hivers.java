@@ -1,12 +1,17 @@
 package org.mti.hivers;
 
+import org.mti.hivers.server.Extension;
+import org.mti.hivers.server.RestHivers;
+
 import java.util.*;
 
 public class Hivers {
     private List<Scope> scopes;
+    private List<Extension> extensions;
 
     Hivers() {
         this.scopes = new ArrayList<>();
+        this.extensions = new ArrayList<>();
         scopes.add(new Scope());
     }
 
@@ -53,4 +58,15 @@ public class Hivers {
     private Scope getCurrentScope() {
         return this.scopes.get(this.scopes.size() - 1);
     }
+
+    public void register(RestHivers restHivers) {
+        extensions.add(restHivers);
+    }
+
+    /*
+    public<T> Extension extension(Class<T> bindingObject) {
+        var extension = extensions.stream().findFirst();
+    }
+
+     */
 }
