@@ -10,14 +10,14 @@ import java.util.function.Supplier;
 public class Singleton<T> {
     static private Map<Class<Object>, Object> createdSingletons = new HashMap<>();
 
-//    Singleton(Class<T> bindingObject, Supplier<T> fn) {
-//        if (Singleton.createdSingletons.containsKey(bindingObject)) {
-//            return;
-//        }
-//        Singleton.createdSingletons.put((Class<Object>) bindingObject, fn.get());
-//    }
+    Singleton(Class<T> bindingObject, Supplier<T> fn) {
+        if (Singleton.createdSingletons.containsKey(bindingObject)) {
+            return;
+        }
+        Singleton.createdSingletons.put((Class<Object>) bindingObject, fn.get());
+    }
 
-    Singleton(Class<T> bindingObject, T boundInstance) {
+    Singleton(Class<? extends T> bindingObject, T boundInstance) {
         if (Singleton.createdSingletons.containsKey(bindingObject)) {
             return;
         }
