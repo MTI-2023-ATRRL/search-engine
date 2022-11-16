@@ -7,11 +7,11 @@ import java.util.function.Supplier;
 
 public class Prototype<T> {
     Supplier<T> boundSupplier;
-    Class<T> bindingClass;
+    Class<T> bindingObject;
 
-    Prototype(Class<T> bindingClass, Supplier<T> boundSupplier) {
+    Prototype(Class<T> bindingObject, Supplier<T> boundSupplier) {
         this.boundSupplier = boundSupplier;
-        this.bindingClass = bindingClass;
+        this.bindingObject = bindingObject;
     }
 
     public T instanceOf() {

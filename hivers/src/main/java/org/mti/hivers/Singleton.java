@@ -25,8 +25,4 @@ public class Singleton<T> {
     public T instanceOf() {
         return boundInstance;
     }
-
-    public Class<T> getBindingObject() {
-        return bindingObject;
-    }
 }

@@ -3,22 +3,48 @@ package org.mti.hivers;
 import java.util.*;
 
 public class Hivers {
-    private Singleton singleton;
-    private Prototype prototype;
+    private List<Scope> scopes;
 
     Hivers() {
-        return;
+        this.scopes = new ArrayList<>();
+        scopes.add(new Scope());
     }
 
     public void provider(Prototype prototype) {
-        this.prototype = prototype;
+        Scope scope = this.getCurrentScope();
+        scope.prototypeProviders.put(prototype.bindingObject, prototype);
     }
 
     public void provider(Singleton singleton) {
-        this.singleton = singleton;
+        Scope scope = this.getCurrentScope();
+        scope.singletonProviders.put(singleton.bindingObject, singleton);
     }
 
-    public<T> Optional<T> instanceOf(Class<T> bindingClass) {
+    public<T> Optional<T> instanceOf(Class<T> bindingObject) {
+        for (var i = this.scopes.size() - 1; i >= 0; i--) {
+            Scope scope = this.scopes.get(i);
+
+            if (scope.singletonProviders.containsKey(bindingObject)) {
+                return (Optional<T>) Optional.of(scope.singletonProviders.get(bindingObject).instanceOf());
+            }
+
+            if (scope.prototypeProviders.containsKey(bindingObject)) {
+                return (Optional<T>) Optional.of(scope.prototypeProviders.get(bindingObject).instanceOf());
+            }
+        }
+
         return Optional.ofNullable(null);
+    }
+
+    public void push(Scope scope) {
+        this.scopes.add(scope);
+    }
+
+    public void pop() {
+        this.scopes.remove(this.scopes.size() - 1);
+    }
+
+    private Scope getCurrentScope() {
+        return this.scopes.get(this.scopes.size() - 1);
     }
 }

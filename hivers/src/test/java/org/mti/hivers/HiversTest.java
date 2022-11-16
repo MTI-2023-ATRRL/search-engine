@@ -7,6 +7,12 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class HiversTest {
 
+    public void times(Integer max, Runnable runnable) {
+        for (var i = 0; i < max; i++) {
+            runnable.run();
+        }
+    }
+
     @Test
     public void shouldBeAbleToCreateHivers() {
         var hivers = new Hivers();
@@ -38,21 +44,21 @@ class HiversTest {
         hivers.provider(new Prototype<>(Nested.class, () -> new Nested(hivers.instanceOf(TestService.class).orElseThrow())));
         hivers.provider(new Singleton<>(Nested.class, new Nested(hivers.instanceOf(TestService.class).orElseThrow())));
 
-//        // Test instance resolution
-//        hivers.instanceOf(TestService.class).orElseThrow().ping();
-//        times(3, () -> System.out.println(hivers.instanceOf(TestService.class).orElseThrow()));
-//        times(3, () -> System.out.println(hivers.instanceOf(Nested.class).orElseThrow()));
-//
-//        // New scope and test instance resolution
-//        hivers.push(new Scope());
-//        hivers.provider(new Singleton<>(TestService.class, new PongService()));
-//        times(3, () -> System.out.println(hivers.instanceOf(TestService.class).orElseThrow()));
-//
-//        hivers.instanceOf(TestService.class).orElseThrow().ping();
-//
-//        // Pop scope and test instance resolution
-//        hivers.pop();
-//        hivers.instanceOf(TestService.class).orElseThrow().ping();
+        // Test instance resolution
+        hivers.instanceOf(TestService.class).orElseThrow().ping();
+        times(3, () -> System.out.println(hivers.instanceOf(TestService.class).orElseThrow()));
+        times(3, () -> System.out.println(hivers.instanceOf(Nested.class).orElseThrow()));
+
+        // New scope and test instance resolution
+        hivers.push(new Scope());
+        hivers.provider(new Singleton<>(TestService.class, new PongService()));
+        times(3, () -> System.out.println(hivers.instanceOf(TestService.class).orElseThrow()));
+
+        hivers.instanceOf(TestService.class).orElseThrow().ping();
+
+        // Pop scope and test instance resolution
+        hivers.pop();
+        hivers.instanceOf(TestService.class).orElseThrow().ping();
 //
 //        // Aspects
 //        hivers.push(new Scope());
