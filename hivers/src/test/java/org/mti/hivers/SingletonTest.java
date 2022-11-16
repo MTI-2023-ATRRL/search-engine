@@ -28,7 +28,7 @@ class SingletonTest {
     @Test
     void shouldBeAbleToCreateAndRetrieveAndUseIt() {
         var singleton = new Singleton<>(PingService.class, new PingService());
-        assertEquals(singleton.instanceOf(PingService.class).ping(), "Ping");
+        assertEquals(singleton.instanceOf(PingService.class).orElseThrow().ping(), "Ping");
     }
 
     @Test

@@ -2,6 +2,7 @@ package org.mti.hivers;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 import java.util.function.Supplier;
 
 public class Prototype<T> {
@@ -14,7 +15,11 @@ public class Prototype<T> {
         prototypes.put((Class<Object>) bindingClass, (Supplier<Object>) boundSupplier);
     }
 
-    public T instanceOf(Class<T> bindingClass) {
-        return (T) prototypes.get(bindingClass).get();
+    public Optional<T> instanceOf(Class<T> bindingClass) {
+        if (prototypes.containsKey(bindingClass)) {
+            return Optional.of((T)prototypes.get(bindingClass).get());
+        }
+
+        return Optional.empty();
     }
 }
