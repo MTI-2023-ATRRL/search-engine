@@ -9,7 +9,7 @@ import org.mti.hivers.server.RestHivers;
 import java.util.*;
 
 public class Hivers {
-    private List<Scope> scopes;
+    private final List<Scope> scopes;
     private List<Extension> extensions;
 
     Hivers() {
