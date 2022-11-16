@@ -43,4 +43,9 @@ class SingletonTest {
         var singleton = new Singleton<>(PingService.class, PingService::new);
         assertEquals(singleton.instanceOf(), singleton.instanceOf());
     }
+
+    @Test
+    void test() {
+        var singleton = new Singleton<>(PingService.class, PingService::new);
+    }
 }

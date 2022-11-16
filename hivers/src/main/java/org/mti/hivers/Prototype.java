@@ -1,6 +1,7 @@
 package org.mti.hivers;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.function.Supplier;
@@ -8,6 +9,9 @@ import java.util.function.Supplier;
 public class Prototype<T> {
     Supplier<T> boundSupplier;
     Class<T> bindingObject;
+
+    List<ProxyDefinition> aspectList;
+    ProxyDefinition init;
 
     Prototype(Class<T> bindingObject, Supplier<T> boundSupplier) {
         this.boundSupplier = boundSupplier;

@@ -2,6 +2,7 @@
 package org.mti.hivers;
 
 import org.junit.jupiter.api.Test;
+import org.mti.hivers.aspect.LoggerAspect;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -59,7 +60,7 @@ class HiversTest {
         // Pop scope and test instance resolution
         hivers.pop();
         hivers.instanceOf(TestService.class).orElseThrow().ping();
-//
+
 //        // Aspects
 //        hivers.push(new Scope());
 //        hivers.provider(new Singleton<>(TestService.class, new PongService()))

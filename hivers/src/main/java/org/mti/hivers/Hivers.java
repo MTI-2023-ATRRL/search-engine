@@ -10,14 +10,16 @@ public class Hivers {
         scopes.add(new Scope());
     }
 
-    public void provider(Prototype prototype) {
+    public Hivers provider(Prototype prototype) {
         Scope scope = this.getCurrentScope();
         scope.prototypeProviders.put(prototype.bindingObject, prototype);
+        return this;
     }
 
-    public void provider(Singleton singleton) {
+    public Hivers provider(Singleton singleton) {
         Scope scope = this.getCurrentScope();
         scope.singletonProviders.put(singleton.bindingObject, singleton);
+        return this;
     }
 
     public<T> Optional<T> instanceOf(Class<T> bindingObject) {
@@ -34,6 +36,10 @@ public class Hivers {
         }
 
         return Optional.ofNullable(null);
+    }
+
+    public void withProxies(boolean first, boolean second) {
+        return;
     }
 
     public void push(Scope scope) {
