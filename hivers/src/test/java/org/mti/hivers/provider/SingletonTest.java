@@ -1,4 +1,4 @@
-package org.mti.hivers;
+package org.mti.hivers.provider;
 
 import org.junit.jupiter.api.Test;
 import org.mti.hivers.provider.Singleton;

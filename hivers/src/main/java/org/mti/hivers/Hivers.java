@@ -36,8 +36,9 @@ public class Hivers {
         return Optional.empty();
     }
 
-    public void push(Scope scope) {
+    public Scope push(Scope scope) {
         this.scopes.add(scope);
+        return scope;
     }
 
     public void pop() {
