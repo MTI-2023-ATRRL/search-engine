@@ -11,21 +11,16 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 
 public class TransportLayer {
-    enum TRANSPORT_PROTOCOL {
-        BY_URL,
-        BY_PATH,
-    }
-
     private final String resource;
-    private final TRANSPORT_PROTOCOL protocol;
+    private final TransportProtocol protocol;
 
-    public TransportLayer(String resource, TRANSPORT_PROTOCOL protocol) {
+    public TransportLayer(String resource, TransportProtocol protocol) {
         this.resource = resource;
         this.protocol = protocol;
     }
 
     public String getBody() throws IOException {
-        if (this.protocol == TRANSPORT_PROTOCOL.BY_URL) {
+        if (this.protocol == TransportProtocol.BY_URL) {
             return this.urlToRawText(new URL(this.resource));
         }
         return this.fileToRawText(Paths.get(this.resource));

@@ -7,15 +7,15 @@ public class Main {
         String urlPath = "https://example.com";
         String filePath = "C:\\Users\\casne\\Desktop\\Example Domain.html";
 
-        //var transportLayer = new TransportLayer(urlPath, TransportLayer.TRANSPORT_PROTOCOL.BY_URL);
-        var transportLayer = new TransportLayer(filePath, TransportLayer.TRANSPORT_PROTOCOL.BY_PATH);
-        var body = transportLayer.getBody();
+        var indexer = new Indexer();
+        indexer.addDocument(urlPath, TransportProtocol.BY_URL);
+        indexer.addDocument(filePath, TransportProtocol.BY_PATH);
 
-        var tokenisation = new Tokenisation();
-        var tokens = tokenisation.textToTokens(body);
+        var retroIndex = new RetroIndex();
+        for (var document : indexer.getDocuments()) {
+            retroIndex.addDocument(document);
+        }
 
-        var vector = new Vector();
-        var vectorCount = vector.count(tokens);
-        System.out.println(vectorCount);
+        System.out.println(retroIndex);
     }
 }

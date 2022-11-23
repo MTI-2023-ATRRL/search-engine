@@ -2,31 +2,14 @@ package org.mti.tfidf.indexation;
 
 import java.util.*;
 
-class TokenWithCount {
-    String word;
-    double frequency;
-    List<Integer> indexes;
-
-    public TokenWithCount(String word, double frequency, List<Integer> indexes) {
-        this.word = word;
-        this.frequency = frequency;
-        this.indexes = indexes;
-    }
-
-    @Override
-    public String toString() {
-        return word + " : " + frequency + " " + indexes;
-    }
-}
-
 public class Vector {
-    public List<TokenWithCount> count(List<String> tokens) {
+    public List<WordFrequency> count(List<String> tokens) {
         Map<String, List<Integer>> tokensIndexes = this.getTokensIndexes(tokens);
 
         var tokensLength = tokens.size();
-        var tokensCount = new ArrayList<TokenWithCount>();
+        var tokensCount = new ArrayList<WordFrequency>();
 
-        tokensIndexes.forEach((key, value) -> tokensCount.add(new TokenWithCount(key, (double) value.size() / tokensLength, value)));
+        tokensIndexes.forEach((key, value) -> tokensCount.add(new WordFrequency(key, (double) value.size() / tokensLength, value)));
         return tokensCount;
     }
 
