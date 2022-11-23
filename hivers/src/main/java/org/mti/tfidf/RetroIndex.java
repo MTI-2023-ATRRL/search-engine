@@ -1,4 +1,4 @@
-package org.mti.tfidf.indexation;
+package org.mti.tfidf;
 
 import java.util.ArrayList;
 import java.util.HashMap;
