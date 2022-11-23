@@ -8,17 +8,17 @@ import java.net.URL;
 import java.util.*;
 
 public class Indexation {
-    public static void main(String[] args) {
+    public List<String> documentToTokens() {
         Indexation ind = new Indexation();
         var text = ind.htmlToRawText("https://stackoverflow.com/questions/18830813/how-can-i-remove-punctuation-from-input-text-in-java");
         var tokens = ind.textToTokens(text);
         System.out.println(tokens);
         var cleanedTokens = ind.removeStopWords(tokens);
         var tokensStemmed = ind.getWordsStem(cleanedTokens);
-        var tokensReplacedWithSynonyms = ind.replaceSynonyms(tokensStemmed);
+        return ind.replaceSynonyms(tokensStemmed);
     }
 
-    public String htmlToRawText(String url) {
+    private String htmlToRawText(String url) {
         try {
             Document doc = Jsoup.parse(new URL(url), 10000);
             doc.outputSettings().prettyPrint(false);
@@ -28,17 +28,17 @@ public class Indexation {
         }
     }
 
-    public List<String> textToTokens(String text) {
+    private List<String> textToTokens(String text) {
         return List.of(text.toLowerCase().replaceAll("[^a-zA-Z0-9 ]", "").split("\\s+"));
     }
 
-    public List<String> removeStopWords(List<String> tokens) {
+    private List<String> removeStopWords(List<String> tokens) {
         Set<String> stopWords = this.getStopWordsFromFile();
 
         return tokens.stream().filter((token) -> !stopWords.contains(token)).toList();
     }
 
-    public List<String> replaceSynonyms(List<String> tokens) {
+    private List<String> replaceSynonyms(List<String> tokens) {
         var synonyms = this.getSynonyms();
 
         return tokens.stream().map((token) -> {
@@ -48,7 +48,7 @@ public class Indexation {
         }).toList();
     }
 
-    public List<String> getWordsStem(List<String> tokens) {
+    private List<String> getWordsStem(List<String> tokens) {
         var stemmings = this.getStemmings();
 
         return tokens.stream().map((token) -> {
