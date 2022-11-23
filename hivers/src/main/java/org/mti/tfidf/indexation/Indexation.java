@@ -10,11 +10,12 @@ import java.util.*;
 public class Indexation {
     public static void main(String[] args) {
         Indexation ind = new Indexation();
-        var text = ind.htmlToRawText("https://example.com");
+        var text = ind.htmlToRawText("https://stackoverflow.com/questions/18830813/how-can-i-remove-punctuation-from-input-text-in-java");
         var tokens = ind.textToTokens(text);
+        System.out.println(tokens);
         var cleanedTokens = ind.removeStopWords(tokens);
-        var tokensReplacedWithSynonyms = ind.replaceSynonyms(cleanedTokens);
-        var tokensStemmed = ind.getWordsStem(tokensReplacedWithSynonyms);
+        var tokensStemmed = ind.getWordsStem(cleanedTokens);
+        var tokensReplacedWithSynonyms = ind.replaceSynonyms(tokensStemmed);
     }
 
     public String htmlToRawText(String url) {
@@ -28,7 +29,7 @@ public class Indexation {
     }
 
     public List<String> textToTokens(String text) {
-        return List.of(text.toLowerCase().split("\\s+"));
+        return List.of(text.toLowerCase().replaceAll("[^a-zA-Z0-9 ]", "").split("\\s+"));
     }
 
     public List<String> removeStopWords(List<String> tokens) {
