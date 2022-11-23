@@ -1,53 +1,27 @@
 package org.mti.tfidf.indexation;
 
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-
 import java.io.*;
-import java.net.URL;
 import java.util.*;
 
 public class Tokenisation {
-    public List<String> documentToTokens() {
-        Tokenisation ind = new Tokenisation();
-        var text = ind.htmlToRawText("https://example.com");
-        var tokens = ind.textToTokens(text);
-        var cleanedTokens = ind.removeStopWords(tokens);
-        var tokensStemmed = ind.getWordsStem(cleanedTokens);
-        return ind.replaceSynonyms(tokensStemmed);
+    public List<String> textToTokens(String body) {
+        var tokens = this.splitTextToTokens(body);
+        var cleanedTokens = this.removeStopWordsFromTokens(tokens);
+        var tokensStemmed = this.stemWordsInTokens(cleanedTokens);
+        return this.replaceSynonymsInTokens(tokensStemmed);
     }
 
-    private String htmlToRawText(String url) {
-        try {
-            Document doc = Jsoup.parse(new URL(url), 10000);
-            doc.outputSettings().prettyPrint(false);
-            return doc.body().text();
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    private List<String> textToTokens(String text) {
+    private List<String> splitTextToTokens(String text) {
         return List.of(text.toLowerCase().replaceAll("[^a-zA-Z0-9 ]", "").split("\\s+"));
     }
 
-    private List<String> removeStopWords(List<String> tokens) {
+    private List<String> removeStopWordsFromTokens(List<String> tokens) {
         Set<String> stopWords = this.getStopWordsFromFile();
 
         return tokens.stream().filter((token) -> !stopWords.contains(token)).toList();
     }
 
-    private List<String> replaceSynonyms(List<String> tokens) {
-        var synonyms = this.getSynonyms();
-
-        return tokens.stream().map((token) -> {
-            var synonym = synonyms.get(token);
-            if (synonym == null) return token;
-            return synonym;
-        }).toList();
-    }
-
-    private List<String> getWordsStem(List<String> tokens) {
+    private List<String> stemWordsInTokens(List<String> tokens) {
         var stemmings = this.getStemmings();
 
         return tokens.stream().map((token) -> {
@@ -57,6 +31,16 @@ public class Tokenisation {
                 }
             }
             return token;
+        }).toList();
+    }
+
+    private List<String> replaceSynonymsInTokens(List<String> tokens) {
+        var synonyms = this.getSynonyms();
+
+        return tokens.stream().map((token) -> {
+            var synonym = synonyms.get(token);
+            if (synonym == null) return token;
+            return synonym;
         }).toList();
     }
 

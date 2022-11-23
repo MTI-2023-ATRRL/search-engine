@@ -1,6 +1,5 @@
 package org.mti.tfidf.indexation;
 
-import java.sql.Array;
 import java.util.*;
 
 class TokenWithCount {
@@ -21,17 +20,8 @@ class TokenWithCount {
 }
 
 public class Vector {
-    public static void main(String[] args) {
-        var tokenisation = new Tokenisation();
-        var tokens = tokenisation.documentToTokens();
-
-        var vector = new Vector();
-        var countResult = vector.Count(tokens);
-        System.out.println(countResult);
-    }
-
-    private List<TokenWithCount> Count(List<String> tokens) {
-        Map<String, List<Integer>> tokensIndexes = this.GetTokensIndexes(tokens);
+    public List<TokenWithCount> count(List<String> tokens) {
+        Map<String, List<Integer>> tokensIndexes = this.getTokensIndexes(tokens);
 
         var tokensLength = tokens.size();
         var tokensCount = new ArrayList<TokenWithCount>();
@@ -40,7 +30,7 @@ public class Vector {
         return tokensCount;
     }
 
-    private Map<String, List<Integer>> GetTokensIndexes(List<String> tokens) {
+    private Map<String, List<Integer>> getTokensIndexes(List<String> tokens) {
         var tokensIndexes = new HashMap<String, List<Integer>>();
         for (int i = 0; i < tokens.size(); i++) {
             var token = tokens.get(i);
