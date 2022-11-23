@@ -3,6 +3,18 @@ package org.mti.tfidf;
 import java.util.List;
 
 public class WordFrequency {
+    public String getWord() {
+        return word;
+    }
+
+    public double getFrequency() {
+        return frequency;
+    }
+
+    public List<Integer> getIndexes() {
+        return indexes;
+    }
+
     String word;
     double frequency;
     List<Integer> indexes;
