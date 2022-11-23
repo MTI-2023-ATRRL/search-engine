@@ -25,18 +25,7 @@ public class Singleton<BOUND_TYPE> implements Provider<BOUND_TYPE> {
     @Override
     public BOUND_TYPE getValue() {
         if (instance == null) {
-            instance = boundSupplier.get();
-            for (ProxyDefinition proxy: this.proxys) {
-                if (proxy.proxyType == ProxyDefinition.PROXY_TYPE.AROUND) {
-                    instance = (BOUND_TYPE) Proxy.newProxyInstance(
-                            this.bindingObject.getClassLoader(),
-                            new Class<?>[] { this.bindingObject },
-                            new ProxyHandler(instance, proxy)
-                    );
-                } else if (proxy.proxyType == ProxyDefinition.PROXY_TYPE.INIT) {
-                    proxy.initRunnable.run();
-                }
-            }
+            instance = applyProxies(boundSupplier.get(), bindingObject);
         }
         return instance;
     }
@@ -44,13 +33,5 @@ public class Singleton<BOUND_TYPE> implements Provider<BOUND_TYPE> {
     @Override
     public Class<BOUND_TYPE> getBoundClass() {
         return this.bindingObject;
-    }
-
-    @Override
-    public Provider withProxies(ProxyDefinition... proxyList) {
-        for (var proxy: proxyList) {
-            this.proxys.add(proxy);
-        }
-        return this;
     }
 }
