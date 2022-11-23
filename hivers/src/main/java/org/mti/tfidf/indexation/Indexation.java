@@ -13,9 +13,8 @@ public class Indexation {
         var text = ind.htmlToRawText("https://example.com");
         var tokens = ind.textToTokens(text);
         var cleanedTokens = ind.removeStopWords(tokens);
-        System.out.println(cleanedTokens);
         var tokensReplacedWithSynonyms = ind.replaceSynonyms(cleanedTokens);
-        System.out.println(tokensReplacedWithSynonyms);
+        var tokensStemmed = ind.getWordsStem(tokensReplacedWithSynonyms);
     }
 
     public String htmlToRawText(String url) {
@@ -45,6 +44,19 @@ public class Indexation {
             var synonym = synonyms.get(token);
             if (synonym == null) return token;
             return synonym;
+        }).toList();
+    }
+
+    public List<String> getWordsStem(List<String> tokens) {
+        var stemmings = this.getStemmings();
+
+        return tokens.stream().map((token) -> {
+            for (var stem : stemmings) {
+                if (token.endsWith(stem)) {
+                    return token.substring(0, token.length() - stem.length());
+                }
+            }
+            return token;
         }).toList();
     }
 
@@ -81,5 +93,20 @@ public class Indexation {
             throw new RuntimeException(e);
         }
         return synonyms;
+    }
+
+    private Set<String> getStemmings() {
+        Set<String> stemmings = new HashSet<>();
+
+        InputStream stream = getClass().getClassLoader().getResourceAsStream("stemmings.txt");
+        try (BufferedReader reader = new BufferedReader(new InputStreamReader(stream))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                stemmings.add(line);
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        return stemmings;
     }
 }

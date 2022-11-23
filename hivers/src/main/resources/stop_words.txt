@@ -172,13 +172,13 @@ five
 followed
 following
 follows
- for
- forever
- former
- formerly
- forth
- forward
- found
+for
+forever
+former
+formerly
+forth
+forward
+found
 four
 from
 further
