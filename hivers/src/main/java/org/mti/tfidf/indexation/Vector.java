@@ -1,41 +1,60 @@
 package org.mti.tfidf.indexation;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.sql.Array;
+import java.util.*;
 
 class TokenWithCount {
     String word;
     double frequency;
-    List<Integer> indexes = new ArrayList<>();
+    List<Integer> indexes;
 
-    public TokenWithCount(String word, double frequency, Integer index) {
+    public TokenWithCount(String word, double frequency, List<Integer> indexes) {
         this.word = word;
         this.frequency = frequency;
-        indexes.add(index);
+        this.indexes = indexes;
+    }
+
+    @Override
+    public String toString() {
+        return word + " : " + frequency + " " + indexes;
     }
 }
 
 public class Vector {
     public static void main(String[] args) {
-        Tokenisation indexation = new Tokenisation();
+        var tokenisation = new Tokenisation();
+        var tokens = tokenisation.documentToTokens();
+
+        var vector = new Vector();
+        var countResult = vector.Count(tokens);
+        System.out.println(countResult);
     }
 
-    private Map<String, TokenWithCount> Count(Tokenisation indexation) {
-        var tokensFrequency = new HashMap<String, TokenWithCount>();
+    private List<TokenWithCount> Count(List<String> tokens) {
+        Map<String, List<Integer>> tokensIndexes = this.GetTokensIndexes(tokens);
 
-        var tokens = indexation.documentToTokens();
         var tokensLength = tokens.size();
+        var tokensCount = new ArrayList<TokenWithCount>();
+
+        tokensIndexes.forEach((key, value) -> tokensCount.add(new TokenWithCount(key, (double) value.size() / tokensLength, value)));
+        return tokensCount;
+    }
+
+    private Map<String, List<Integer>> GetTokensIndexes(List<String> tokens) {
+        var tokensIndexes = new HashMap<String, List<Integer>>();
         for (int i = 0; i < tokens.size(); i++) {
             var token = tokens.get(i);
-
-            var mapItem = tokensFrequency.get(token);
-            if (mapItem == null) {
-                tokensFrequency.put(token, new TokenWithCount(token, 1.0 / tokensLength, i));
+            if (tokensIndexes.containsKey(token)) {
+                var tokenFrequency = tokensIndexes.get(token);
+                tokenFrequency.add(i);
+            } else {
+                var indexes = new ArrayList<Integer>();
+                indexes.add(i);
+                tokensIndexes.put(token, indexes);
             }
         }
 
-        return tokensFrequency;
+        return tokensIndexes;
     }
 }
+

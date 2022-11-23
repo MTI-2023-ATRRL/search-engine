@@ -10,9 +10,8 @@ import java.util.*;
 public class Tokenisation {
     public List<String> documentToTokens() {
         Tokenisation ind = new Tokenisation();
-        var text = ind.htmlToRawText("https://stackoverflow.com/questions/18830813/how-can-i-remove-punctuation-from-input-text-in-java");
+        var text = ind.htmlToRawText("https://example.com");
         var tokens = ind.textToTokens(text);
-        System.out.println(tokens);
         var cleanedTokens = ind.removeStopWords(tokens);
         var tokensStemmed = ind.getWordsStem(cleanedTokens);
         return ind.replaceSynonyms(tokensStemmed);
