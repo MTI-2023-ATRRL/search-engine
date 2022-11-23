@@ -1,14 +1,7 @@
 package org.mti.hivers.provider;
 
-import org.mti.hivers.provider.Provider;
+import org.mti.hivers.proxy.ProxyDefinition;
 
-import javax.management.ObjectInstance;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
-import java.util.function.Consumer;
-import java.util.function.Function;
 import java.util.function.Supplier;
 
 public class Singleton<BOUND_TYPE> implements Provider<BOUND_TYPE> {
@@ -38,5 +31,11 @@ public class Singleton<BOUND_TYPE> implements Provider<BOUND_TYPE> {
     @Override
     public Class<BOUND_TYPE> getBoundClass() {
         return this.bindingObject;
+    }
+
+    @Override
+    public Provider withProxies(ProxyDefinition proxyDefinition) {
+        this.proxys.add(proxyDefinition);
+        return this;
     }
 }

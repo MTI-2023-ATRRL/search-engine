@@ -1,11 +1,9 @@
 package org.mti.hivers.provider;
 
-import org.mti.hivers.provider.Provider;
+import org.mti.hivers.proxy.ProxyDefinition;
+import org.mti.hivers.proxy.ProxyHandler;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.lang.reflect.Proxy;
 import java.util.function.Supplier;
 
 public class Prototype<BOUND_TYPE> implements Provider<BOUND_TYPE> {
@@ -19,11 +17,26 @@ public class Prototype<BOUND_TYPE> implements Provider<BOUND_TYPE> {
 
     @Override
     public BOUND_TYPE getValue() {
-        return this.boundSupplier.get();
+        var result = this.boundSupplier.get();
+        for (ProxyDefinition proxy: this.proxys) {
+            result = (BOUND_TYPE) Proxy.newProxyInstance(
+                    this.bindingObject.getClassLoader(),
+                    new Class<?>[] { this.bindingObject },
+                    new ProxyHandler(result, proxy)
+            );
+        }
+
+        return result;
     }
 
     @Override
     public Class<BOUND_TYPE> getBoundClass() {
         return this.bindingObject;
+    }
+
+    @Override
+    public Provider withProxies(ProxyDefinition proxyDefinition) {
+        this.proxys.add(proxyDefinition);
+        return this;
     }
 }
