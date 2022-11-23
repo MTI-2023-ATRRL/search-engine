@@ -7,9 +7,9 @@ import java.io.*;
 import java.net.URL;
 import java.util.*;
 
-public class Indexation {
+public class Tokenisation {
     public List<String> documentToTokens() {
-        Indexation ind = new Indexation();
+        Tokenisation ind = new Tokenisation();
         var text = ind.htmlToRawText("https://stackoverflow.com/questions/18830813/how-can-i-remove-punctuation-from-input-text-in-java");
         var tokens = ind.textToTokens(text);
         System.out.println(tokens);
@@ -83,7 +83,7 @@ public class Indexation {
         try (BufferedReader reader = new BufferedReader(new InputStreamReader(stream))) {
             String line;
             while ((line = reader.readLine()) != null) {
-                var words = line.split(" ");
+                var words = line.split(",");
                 var mainSynonym = words[0];
 
                 for (var word : words) {
