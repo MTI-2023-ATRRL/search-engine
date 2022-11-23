@@ -10,11 +10,12 @@ import java.util.*;
 
 public class Hivers {
     private final List<Scope> scopes;
-    private List<Extension> extensions;
+
+    private Map<Class<?>, Extension> extensions;
 
     Hivers() {
         this.scopes = new ArrayList<>();
-        this.extensions = new ArrayList<>();
+        this.extensions = new HashMap<>();
         scopes.add(new Scope());
     }
 
@@ -49,7 +50,12 @@ public class Hivers {
         return this.scopes.get(this.scopes.size() - 1);
     }
 
-    public void register(RestHivers restHivers) {
-        extensions.add(restHivers);
+    public void register(Extension extension) {
+        extensions.put(extension.getClass(), extension);
+    }
+
+    public Extension extension(Class clazz)
+    {
+        return extensions.get(clazz);
     }
 }

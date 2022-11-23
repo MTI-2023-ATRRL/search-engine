@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 import org.mti.hivers.aspect.LoggerAspect;
 import org.mti.hivers.provider.Prototype;
 import org.mti.hivers.provider.Singleton;
+import org.mti.hivers.server.RestHivers;
 import org.mti.hivers.proxy.ProxyDefinition;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -74,15 +75,15 @@ class HiversTest {
 
 //        // Extension
 //        hivers.push(new DefaultScope());
-//        hivers.register(new RestHivers());
-//        hivers.extension(RestHivers.class)
-//                .register(RestHivers.Method.GET, "/hello", context -> context.response(200, "Hello, world!"))
-//                .register(RestHivers.Method.DELETE, "/", context -> {
-//                    hivers.extension(RestHivers.class).shutdown();
-//                    context.response(204);
-//                })
-//                .start();
-//
+        hivers.register(new RestHivers());
+        hivers.extension(RestHivers.class)
+                .register(RestHivers.Method.GET, "/hello", context -> context.response(200, "Hello, world!"))
+                .register(RestHivers.Method.DELETE, "/", context -> {
+                    hivers.extension(RestHivers.class).shutdown();
+                    context.response(204);
+                })
+                .start();
+
     }
 
     public interface TestService {
