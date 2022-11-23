@@ -36,7 +36,6 @@ public class Singleton<BOUND_TYPE> implements Provider<BOUND_TYPE> {
                 } else if (proxy.proxyType == ProxyDefinition.PROXY_TYPE.INIT) {
                     proxy.initRunnable.run();
                 }
-
             }
         }
         return instance;
@@ -48,7 +47,7 @@ public class Singleton<BOUND_TYPE> implements Provider<BOUND_TYPE> {
     }
 
     @Override
-    public Provider withProxies(ProxyDefinition ...proxyList) {
+    public Provider withProxies(ProxyDefinition... proxyList) {
         for (var proxy: proxyList) {
             this.proxys.add(proxy);
         }

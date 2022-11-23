@@ -19,11 +19,15 @@ public class Prototype<BOUND_TYPE> implements Provider<BOUND_TYPE> {
     public BOUND_TYPE getValue() {
         var instance = this.boundSupplier.get();
         for (ProxyDefinition proxy: this.proxys) {
-            instance = (BOUND_TYPE) Proxy.newProxyInstance(
-                    this.bindingObject.getClassLoader(),
-                    new Class<?>[] { this.bindingObject },
-                    new ProxyHandler(instance, proxy)
-            );
+            if (proxy.proxyType == ProxyDefinition.PROXY_TYPE.AROUND) {
+                instance = (BOUND_TYPE) Proxy.newProxyInstance(
+                        this.bindingObject.getClassLoader(),
+                        new Class<?>[] { this.bindingObject },
+                        new ProxyHandler(instance, proxy)
+                );
+            } else if (proxy.proxyType == ProxyDefinition.PROXY_TYPE.INIT) {
+                proxy.initRunnable.run();
+            }
         }
 
         return instance;
@@ -35,8 +39,8 @@ public class Prototype<BOUND_TYPE> implements Provider<BOUND_TYPE> {
     }
 
     @Override
-    public Provider withProxies(ProxyDefinition ...proxyList) {
-        for (var proxy: proxys) {
+    public Provider withProxies(ProxyDefinition... proxyList) {
+        for (var proxy: proxyList) {
             this.proxys.add(proxy);
         }
         return this;
