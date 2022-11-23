@@ -3,7 +3,7 @@ package org.mti.tfidf;
 import java.io.*;
 import java.util.*;
 
-public class Tokenisation {
+public class Tokenization {
     public List<String> textToTokens(String body) {
         var tokens = this.splitTextToTokens(body);
         var cleanedTokens = this.removeStopWordsFromTokens(tokens);
@@ -12,6 +12,7 @@ public class Tokenisation {
     }
 
     private List<String> splitTextToTokens(String text) {
+        if (Objects.equals(text, "")) return new ArrayList<String>();
         return List.of(text.toLowerCase().replaceAll("[^a-zA-Z0-9 ]", "").split("\\s+"));
     }
 

@@ -15,7 +15,7 @@ public class Indexer {
             var transportLayer = new TransportLayer(resource, protocol);
             var body = transportLayer.getBody();
 
-            var tokenisation = new Tokenisation();
+            var tokenisation = new Tokenization();
             var tokens = tokenisation.textToTokens(body);
 
             var vector = new Vector();
