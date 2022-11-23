@@ -12,5 +12,5 @@ public interface Provider<BOUND_TYPE> {
 
     Class<BOUND_TYPE> getBoundClass();
 
-    Provider withProxies(ProxyDefinition proxyDefinition);
+    Provider withProxies(ProxyDefinition ...proxyList);
 }

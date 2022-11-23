@@ -1,7 +1,9 @@
 package org.mti.hivers.provider;
 
 import org.mti.hivers.proxy.ProxyDefinition;
+import org.mti.hivers.proxy.ProxyHandler;
 
+import java.lang.reflect.Proxy;
 import java.util.function.Supplier;
 
 public class Singleton<BOUND_TYPE> implements Provider<BOUND_TYPE> {
@@ -24,6 +26,18 @@ public class Singleton<BOUND_TYPE> implements Provider<BOUND_TYPE> {
     public BOUND_TYPE getValue() {
         if (instance == null) {
             instance = boundSupplier.get();
+            for (ProxyDefinition proxy: this.proxys) {
+                if (proxy.proxyType == ProxyDefinition.PROXY_TYPE.AROUND) {
+                    instance = (BOUND_TYPE) Proxy.newProxyInstance(
+                            this.bindingObject.getClassLoader(),
+                            new Class<?>[] { this.bindingObject },
+                            new ProxyHandler(instance, proxy)
+                    );
+                } else if (proxy.proxyType == ProxyDefinition.PROXY_TYPE.INIT) {
+                    proxy.initRunnable.run();
+                }
+
+            }
         }
         return instance;
     }
@@ -34,8 +48,10 @@ public class Singleton<BOUND_TYPE> implements Provider<BOUND_TYPE> {
     }
 
     @Override
-    public Provider withProxies(ProxyDefinition proxyDefinition) {
-        this.proxys.add(proxyDefinition);
+    public Provider withProxies(ProxyDefinition ...proxyList) {
+        for (var proxy: proxyList) {
+            this.proxys.add(proxy);
+        }
         return this;
     }
 }

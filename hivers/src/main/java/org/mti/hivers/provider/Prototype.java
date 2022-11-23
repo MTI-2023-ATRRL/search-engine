@@ -17,16 +17,16 @@ public class Prototype<BOUND_TYPE> implements Provider<BOUND_TYPE> {
 
     @Override
     public BOUND_TYPE getValue() {
-        var result = this.boundSupplier.get();
+        var instance = this.boundSupplier.get();
         for (ProxyDefinition proxy: this.proxys) {
-            result = (BOUND_TYPE) Proxy.newProxyInstance(
+            instance = (BOUND_TYPE) Proxy.newProxyInstance(
                     this.bindingObject.getClassLoader(),
                     new Class<?>[] { this.bindingObject },
-                    new ProxyHandler(result, proxy)
+                    new ProxyHandler(instance, proxy)
             );
         }
 
-        return result;
+        return instance;
     }
 
     @Override
@@ -35,8 +35,10 @@ public class Prototype<BOUND_TYPE> implements Provider<BOUND_TYPE> {
     }
 
     @Override
-    public Provider withProxies(ProxyDefinition proxyDefinition) {
-        this.proxys.add(proxyDefinition);
+    public Provider withProxies(ProxyDefinition ...proxyList) {
+        for (var proxy: proxys) {
+            this.proxys.add(proxy);
+        }
         return this;
     }
 }
