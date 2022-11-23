@@ -2,9 +2,11 @@
 package org.mti.hivers;
 
 import org.junit.jupiter.api.Test;
+import org.mti.hivers.aspect.LoggerAspect;
 import org.mti.hivers.provider.Prototype;
 import org.mti.hivers.provider.Singleton;
 import org.mti.hivers.server.RestHivers;
+import org.mti.hivers.proxy.ProxyDefinition;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -63,14 +65,14 @@ class HiversTest {
         hivers.pop();
         hivers.instanceOf(TestService.class).orElseThrow().ping();
 
-//        // Aspects
-//        hivers.push(new Scope());
-//        hivers.provider(new Singleton<>(TestService.class, new PongService()))
-//                .withProxies(ProxyDefinition.around("ping", new LoggerAspect()),
-//                        ProxyDefinition.init(() -> System.out.println("Service init.")));
-//        hivers.instanceOf(TestService.class).orElseThrow().ping();
-//        hivers.pop();
-//
+        // Aspects
+        hivers.push(new Scope());
+        hivers.provider(new Singleton<>(TestService.class, new PongService()))
+                .withProxies(ProxyDefinition.around("ping", new LoggerAspect()),
+                        ProxyDefinition.init(() -> System.out.println("Service init.")));
+        hivers.instanceOf(TestService.class).orElseThrow().ping();
+        hivers.pop();
+
 //        // Extension
 //        hivers.push(new DefaultScope());
         hivers.register(new RestHivers());

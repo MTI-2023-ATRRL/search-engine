@@ -8,7 +8,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class PrototypeTest {
 
-    public static interface Ping {
+    public interface Ping {
         public String ping();
     }
 
@@ -20,20 +20,20 @@ class PrototypeTest {
 
     @Test
     void shoudBeAbleToCreatePrototype() {
-        Prototype<PingService> prototype = new Prototype<>(PingService.class, PingService::new);
+        Prototype<Ping> prototype = new Prototype<>(Ping.class, PingService::new);
         assertNotNull(prototype);
     }
 
     @Test
     void shouldBeAbleToCreatePrototypeAndGetAnInstance() {
-        var prototype = new Prototype<>(PingService.class, PingService::new);
+        var prototype = new Prototype<>(Ping.class, PingService::new);
         var pingService = prototype.getValue();
         assertEquals(pingService.ping(), "Ping");
     }
 
     @Test
     void shouldBeAbleToCreateMultipleInstanceOfPrototype() {
-        var prototype = new Prototype<>(PingService.class, PingService::new);
+        var prototype = new Prototype<>(Ping.class, PingService::new);
         assertNotEquals(prototype.getValue(), prototype.getValue());
     }
 
@@ -48,9 +48,15 @@ class PrototypeTest {
     @Test
     void shouldBeAbleToAddMultipleProxy() {
         var prototype = new Prototype<>(Ping.class, PingService::new);
-        prototype.withProxies(ProxyDefinition.around("ping", new PongAspect("pong")));
-        prototype.withProxies(ProxyDefinition.around("ping", new PongAspect("pang")));
+        prototype.withProxies(ProxyDefinition.around("ping", new PongAspect("pong")), ProxyDefinition.around("ping", new PongAspect("pang")));
         var pingService = prototype.getValue();
         assertEquals(pingService.ping(), "pang");
+    }
+
+    @Test
+    void shouldBeAbleToAddInitProxy() {
+        var prototype = new Prototype<>(Ping.class, PingService::new);
+        prototype.withProxies(ProxyDefinition.init(() -> System.out.println("Hello !")));
+        prototype.getValue();
     }
 }
