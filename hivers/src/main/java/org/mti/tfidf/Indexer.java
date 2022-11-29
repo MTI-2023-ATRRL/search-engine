@@ -1,5 +1,7 @@
 package org.mti.tfidf;
 
+import org.mti.tfidf.transport.TransportLayer;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,17 +12,16 @@ public class Indexer {
         this.documents = new ArrayList<>();
     }
 
-    public void addDocument(String resource, TransportProtocol protocol) {
+    public void addDocument(TransportLayer transportLayer) {
         try {
-            var transportLayer = new TransportLayer(resource, protocol);
-            var body = transportLayer.getBody();
+            var body = transportLayer.getText();
 
             var tokenisation = new Tokenization();
             var tokens = tokenisation.textToTokens(body);
 
             var vector = new Vector();
             var vectorCount = vector.count(tokens);
-            documents.add(new Document(resource, vectorCount));
+            documents.add(new Document(body, vectorCount));
         } catch (Exception e) {
             System.err.println("transport error");
         }
