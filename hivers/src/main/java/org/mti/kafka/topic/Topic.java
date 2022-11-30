@@ -36,12 +36,11 @@ public class Topic {
         this.partitions.get(chosenPartition).supply(message);
     }
 
-    // TODO: Refactor -> Take a consumer
-    // Check if consumer connected if not connected return error
-    // Get ConnectedConsumer
-    // Execute consume
     public Optional<Message> consume(Consumer consumer) {
-        return Optional.empty();
+        if (connectedConsumerMap.containsKey(consumer.identity)) return Optional.empty();
+
+        var connectedConsumer = connectedConsumerMap.get(consumer.identity);
+        return connectedConsumer.consume();
     }
 
     public ConsumerConnectResult connect(Consumer consumer) {
@@ -73,7 +72,6 @@ public class Topic {
             }
         }
 
-
         return new ConsumerConnectResult(ConsumerConnectResult.ConsumerConnectStatus.SUCCESS);
     }
 
@@ -103,7 +101,22 @@ public class Topic {
             return new ConsumerConnectResult(ConsumerConnectResult.ConsumerConnectStatus.NOT_CONNECTED);
         }
 
+        var partitionsToBalance = connectedConsumerMap.get(consumer.identity).getPartitions();
         this.connectedConsumerMap.remove(consumer.identity);
+
+        if (connectedConsumerMap.size() == 0)
+            return new ConsumerConnectResult(ConsumerConnectResult.ConsumerConnectStatus.SUCCESS);
+
+        var consumers = new ArrayList<>(connectedConsumerMap.values().stream().toList());
+        consumers.sort((first, second) -> (first.getPartitions().size() < second.getPartitions().size()) ? 1 : 0);
+
+        while (!partitionsToBalance.isEmpty()) {
+            for (var c : consumers) {
+                if (partitionsToBalance.isEmpty()) break;
+                c.addPartition(partitionsToBalance.remove(0));
+            }
+        }
+
         return new ConsumerConnectResult(ConsumerConnectResult.ConsumerConnectStatus.SUCCESS);
     }
 
