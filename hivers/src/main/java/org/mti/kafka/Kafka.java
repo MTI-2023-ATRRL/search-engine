@@ -11,7 +11,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Kafka {
-    public Map<String, Topic> topics;
+    private final Map<String, Topic> topics;
 
     Kafka() {
         this.topics = new HashMap<>();
