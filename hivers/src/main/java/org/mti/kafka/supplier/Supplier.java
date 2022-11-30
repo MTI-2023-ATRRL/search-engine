@@ -1,6 +1,6 @@
 package org.mti.kafka.supplier;
 
-import org.mti.kafka.Message;
+import org.mti.kafka.message.Message;
 
 public class Supplier {
     public final String topicName;

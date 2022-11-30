@@ -1,7 +1,9 @@
-package org.mti.kafka;
+package org.mti.kafka.topic;
 
 import org.mti.kafka.consumer.ConnectedConsumer;
 import org.mti.kafka.consumer.Consumer;
+import org.mti.kafka.message.Message;
+import org.mti.kafka.partition.Partition;
 
 import java.util.*;
 

@@ -1,4 +1,6 @@
-package org.mti.kafka;
+package org.mti.kafka.partition;
+
+import org.mti.kafka.message.Message;
 
 import java.util.LinkedList;
 import java.util.Optional;

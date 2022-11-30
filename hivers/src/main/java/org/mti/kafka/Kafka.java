@@ -1,8 +1,10 @@
 package org.mti.kafka;
 
 import org.mti.kafka.consumer.Consumer;
+import org.mti.kafka.message.Message;
 import org.mti.kafka.supplier.Supplier;
 import org.mti.kafka.supplier.SupplyResult;
+import org.mti.kafka.topic.Topic;
 
 import java.util.HashMap;
 import java.util.Map;

@@ -1,7 +1,7 @@
 package org.mti.kafka.consumer;
 
-import org.mti.kafka.Message;
-import org.mti.kafka.Partition;
+import org.mti.kafka.message.Message;
+import org.mti.kafka.partition.Partition;
 
 import java.util.List;
 import java.util.Optional;

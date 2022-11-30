@@ -1,4 +1,4 @@
-package org.mti.kafka;
+package org.mti.kafka.message;
 
 public class Message {
     public final String id;
