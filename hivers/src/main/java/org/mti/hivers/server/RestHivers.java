@@ -1,5 +1,6 @@
 package org.mti.hivers.server;
 
+import spark.Request;
 import spark.Response;
 import spark.Spark;
 
@@ -73,8 +74,8 @@ public class RestHivers implements Extension {
         return this;
     }
 
-    private Response restCallback(Response res, Tuple tuple) {
-        var context = new Context();
+    private Response restCallback(Request req, Response res, Tuple tuple) {
+        var context = new Context(req.headers());
         tuple.callback.accept(context);
         //var context = tuple.callback.apply(new Context());
         res.status(context.statusCode);
@@ -88,19 +89,19 @@ public class RestHivers implements Extension {
         routes.forEach((method, tuples) -> {
             switch (method) {
                 case GET -> tuples.forEach(tuple -> get(tuple.route, (req, res) -> {
-                    res = restCallback(res, tuple);
+                    res = restCallback(req, res, tuple);
                     return res.body();
                 }));
                 case PUT -> tuples.forEach(tuple -> put(tuple.route, (req, res) -> {
-                    res = restCallback(res, tuple);
+                    res = restCallback(req, res, tuple);
                     return res.body();
                 }));
                 case POST -> tuples.forEach(tuple -> post(tuple.route, (req, res) -> {
-                    res = restCallback(res, tuple);
+                    res = restCallback(req, res, tuple);
                     return res.body();
                 }));
                 case DELETE -> tuples.forEach(tuple -> delete(tuple.route, (req, res) -> {
-                    res = restCallback(res, tuple);
+                    res = restCallback(req, res, tuple);
                     return res.body();
                 }));
             }
