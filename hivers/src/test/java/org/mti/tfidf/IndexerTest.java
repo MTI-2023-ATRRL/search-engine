@@ -7,16 +7,16 @@ import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class IndexerTest {
+public class IndexerTest {
 
     @Test
-    void shouldBeAbleToCreateIndexer() {
+    public void shouldBeAbleToCreateIndexer() {
         var indexer = new Indexer();
         assertNotNull(indexer);
     }
 
     @Test
-    void shouldBeAbleToAddDocument() {
+    public void shouldBeAbleToAddDocument() {
         var indexer = new Indexer();
         indexer.addDocument(new TransportLayerText("Test"));
         assertEquals(indexer.getDocuments().size(), 1);

@@ -6,9 +6,9 @@ import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class WordFrequencyTest {
+public class WordFrequencyTest {
     @Test
-    void shouldBeAbleToCreateWordFrequency() {
+    public void shouldBeAbleToCreateWordFrequency() {
         var wf = new WordFrequency("Test", 1, new ArrayList<>());
         assertNotNull(wf);
         assertEquals(wf.word, "Test");

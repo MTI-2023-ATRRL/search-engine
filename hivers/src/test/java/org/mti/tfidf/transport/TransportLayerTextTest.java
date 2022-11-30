@@ -4,15 +4,15 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class TransportLayerTextTest {
+public class TransportLayerTextTest {
     @Test
-    void shouldBeAbleToCreateTransportLayerText() {
+    public void shouldBeAbleToCreateTransportLayerText() {
         var transportLayerText = new TransportLayerText("Test");
         assertNotNull(transportLayerText);
     }
 
     @Test
-    void shouldBeAbleToGetTransportLayerText() {
+    public void shouldBeAbleToGetTransportLayerText() {
         var transportLayerText = new TransportLayerText("Test");
         assertEquals(transportLayerText.getText(), "Test");
     }
