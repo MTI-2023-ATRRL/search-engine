@@ -1,14 +1,14 @@
 package org.mti.kafka;
 
 import org.mti.kafka.consumer.Consumer;
-import org.mti.kafka.message.Message;
+import org.mti.kafka.consumer.ConsumerConnectResult;
+import org.mti.kafka.consumer.ConsumerResult;
 import org.mti.kafka.supplier.Supplier;
 import org.mti.kafka.supplier.SupplyResult;
 import org.mti.kafka.topic.Topic;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Optional;
 
 public class Kafka {
     public Map<String, Topic> topics;
@@ -46,31 +46,34 @@ public class Kafka {
         }
     }
 
-    public Optional<Message> consume(Consumer consumer) {
+    public ConsumerResult consume(Consumer consumer) {
         try {
             var topic = this.getTopic(consumer.topicName);
-            return topic.consume(consumer);
+            var message = topic.consume(consumer);
+            if (message.isEmpty()) {
+                return new ConsumerResult(ConsumerResult.ConsumeStatus.NO_MESSAGE_AVAILABLE, null, null);
+            }
+            return new ConsumerResult(ConsumerResult.ConsumeStatus.SUCCESS, message.get().id, message.get().content);
         } catch (Error err) {
-            // TODO: Tell the user that the topics does not exist
-            return Optional.empty();
+            return new ConsumerResult(ConsumerResult.ConsumeStatus.TOPIC_DOES_NOT_EXIST, null, null);
         }
     }
 
-    public void connect(Consumer consumer) {
+    public ConsumerConnectResult connect(Consumer consumer) {
         try {
             var topic = this.getTopic(consumer.topicName);
-            topic.connect(consumer);
+            return topic.connect(consumer);
         } catch (Error err) {
-            // TODO: Tell the user that the tocis does not exist
+            return new ConsumerConnectResult(ConsumerConnectResult.ConsumerConnectStatus.TOPIC_DOES_NOT_EXIST);
         }
     }
 
-    public void disconnect(Consumer consumer) {
+    public ConsumerConnectResult disconnect(Consumer consumer) {
         try {
             var topic = this.getTopic(consumer.topicName);
-            topic.disconnect(consumer);
+            return topic.disconnect(consumer);
         } catch (Error err) {
-            // TODO: Tell the user that the topics does not exist
+            return new ConsumerConnectResult(ConsumerConnectResult.ConsumerConnectStatus.TOPIC_DOES_NOT_EXIST);
         }
     }
 }

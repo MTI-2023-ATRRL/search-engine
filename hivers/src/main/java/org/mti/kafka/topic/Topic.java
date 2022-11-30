@@ -2,6 +2,7 @@ package org.mti.kafka.topic;
 
 import org.mti.kafka.consumer.ConnectedConsumer;
 import org.mti.kafka.consumer.Consumer;
+import org.mti.kafka.consumer.ConsumerConnectResult;
 import org.mti.kafka.message.Message;
 import org.mti.kafka.partition.Partition;
 
@@ -43,12 +44,12 @@ public class Topic {
         return Optional.empty();
     }
 
-    public void connect(Consumer consumer) {
+    public ConsumerConnectResult connect(Consumer consumer) {
         if (this.connectedConsumerMap.containsKey(consumer.identity)) {
-            throw new Error("Already connected !");
+            return new ConsumerConnectResult(ConsumerConnectResult.ConsumerConnectStatus.ALREADY_CONNECTED);
         }
         if (this.connectedConsumerMap.size() == this.partitionSize) {
-            throw new Error("Too many consumer, cannot connect more");
+            return new ConsumerConnectResult(ConsumerConnectResult.ConsumerConnectStatus.UNABLE_TO_CONNECT);
         }
 
         if (this.connectedConsumerMap.size() == 0) {
@@ -60,14 +61,17 @@ public class Topic {
             var connectedConsumer = new ConnectedConsumer(consumer.identity, partitions);
             this.connectedConsumerMap.put(consumer.identity, connectedConsumer);
         }
+
+        return new ConsumerConnectResult(ConsumerConnectResult.ConsumerConnectStatus.SUCCESS);
     }
 
-    public void disconnect(Consumer consumer) {
+    public ConsumerConnectResult disconnect(Consumer consumer) {
         if (!this.connectedConsumerMap.containsKey(consumer.identity)) {
-            throw new Error("User not connected, can not disconnect");
+            return new ConsumerConnectResult(ConsumerConnectResult.ConsumerConnectStatus.NOT_CONNECTED);
         }
 
         this.connectedConsumerMap.remove(consumer.identity);
+        return new ConsumerConnectResult(ConsumerConnectResult.ConsumerConnectStatus.SUCCESS);
     }
 
 }
