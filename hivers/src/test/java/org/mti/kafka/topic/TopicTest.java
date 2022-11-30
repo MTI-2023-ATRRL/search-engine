@@ -64,4 +64,32 @@ class TopicTest {
         assertEquals(1, topic.connectedConsumerMap.get(firstConsumerName).getPartitions().size());
         assertEquals(1, topic.connectedConsumerMap.get(secondConsumerName).getPartitions().size());
     }
+
+    @Test
+    void shouldCreateTopicAndAddNineConsumers() {
+        var topicName = "topic";
+        var partitionsSize = 6;
+        var firstConsumerName = "consumer1";
+        var secondConsumerName = "consumer2";
+        var thirdConsumerName = "consumer3";
+        var fourthConsumerName = "consumer4";
+
+        var topic = new Topic(topicName, partitionsSize);
+        var firstConsumer = new Consumer(topicName, firstConsumerName);
+        var secondConsumer = new Consumer(topicName, secondConsumerName);
+        var thirdConsumer = new Consumer(topicName, thirdConsumerName);
+        var fourthConsumer = new Consumer(topicName, fourthConsumerName);
+
+        topic.connect(firstConsumer);
+        topic.connect(secondConsumer);
+        topic.connect(thirdConsumer);
+        topic.connect(fourthConsumer);
+
+        assertEquals(4, topic.connectedConsumerMap.size());
+        assertEquals(2, topic.connectedConsumerMap.get(firstConsumerName).getPartitions().size());
+        assertEquals(2, topic.connectedConsumerMap.get(secondConsumerName).getPartitions().size());
+        assertEquals(1, topic.connectedConsumerMap.get(thirdConsumerName).getPartitions().size());
+        assertEquals(1, topic.connectedConsumerMap.get(fourthConsumerName).getPartitions().size());
+
+    }
 }

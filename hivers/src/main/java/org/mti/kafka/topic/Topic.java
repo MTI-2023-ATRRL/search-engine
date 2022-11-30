@@ -88,12 +88,12 @@ public class Topic {
     }
 
     private boolean removeGreaterThanRatio(int size, double ratio) {
-        return size > Math.ceil(ratio);
+        return size > ratio;
     }
 
     private void addPartitionToConsumer(Partition partition, double ratio) {
         for (var consumer : connectedConsumerMap.values()) {
-            if (consumer.getPartitions().size() < ratio)
+            if (consumer.getPartitions().size() < Math.floor(ratio))
                 consumer.addPartition(partition);
         }
     }
