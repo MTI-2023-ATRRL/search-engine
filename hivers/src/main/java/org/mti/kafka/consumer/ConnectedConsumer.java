@@ -25,7 +25,15 @@ public class ConnectedConsumer {
         return Optional.empty();
     }
 
-    public void setPartitions(List<Partition> partitions) {
-        this.partitions = partitions;
+    public List<Partition> getPartitions() {
+        return partitions;
+    }
+
+    public void addPartition(Partition partition) {
+        this.partitions.add(partition);
+    }
+
+    public Partition popLastPartition() {
+        return this.partitions.remove(this.partitions.size() - 1);
     }
 }

@@ -60,9 +60,43 @@ public class Topic {
 
             var connectedConsumer = new ConnectedConsumer(consumer.identity, partitions);
             this.connectedConsumerMap.put(consumer.identity, connectedConsumer);
+
+            var ratio = (float) partitionSize / connectedConsumerMap.size();
+
+
+            while (!isRatioVerifiedPerConsumer(ratio)) {
+                for (var c : connectedConsumerMap.values()) {
+                    var partitions = c.getPartitions();
+                    if (removeGreaterThanRatio(partitions.size(), ratio)) {
+                        var partitionToSwap = c.popLastPartition();
+                        addPartitionToConsumer(partitionToSwap, ratio);
+                        break;
+                    }
+                }
+            }
         }
 
         return new ConsumerConnectResult(ConsumerConnectResult.ConsumerConnectStatus.SUCCESS);
+    }
+
+    private boolean isRatioVerifiedPerConsumer(float ratio) {
+        for (var consumer : connectedConsumerMap.values()) {
+            var partitionsSize = consumer.getPartitions().size();
+            if (partitionsSize < ratio - 1 || partitionsSize > ratio + 1)
+                return false;
+        }
+        return true;
+    }
+
+    private boolean removeGreaterThanRatio(int size, float ratio) {
+        return size > ratio + 1;
+    }
+
+    private void addPartitionToConsumer(Partition partition, float ratio) {
+        for (var consumer : connectedConsumerMap.values()) {
+            if (consumer.getPartitions().size() < ratio)
+                consumer.addPartition(partition);
+        }
     }
 
     public ConsumerConnectResult disconnect(Consumer consumer) {
