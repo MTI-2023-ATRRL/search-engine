@@ -12,13 +12,13 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class KafkaTest {
     @Test
-    void shouldBeAbleToCreateKafka() {
+    public void shouldBeAbleToCreateKafka() {
         var kafka = new Kafka();
         assertNotNull(kafka);
     }
 
     @Test
-    void shouldNotBeAbleToCreateTwoIdenticalTopic() {
+    public void shouldNotBeAbleToCreateTwoIdenticalTopic() {
         var kafka = new Kafka();
         kafka.addTopic("topic", 8);
 
@@ -32,14 +32,14 @@ class KafkaTest {
     }
 
     @Test
-    void shouldNotBeAbleToConsumeNoExistingTopic() {
+    public void shouldNotBeAbleToConsumeNoExistingTopic() {
         var kafka = new Kafka();
         var consumerResult = kafka.consume(new Consumer("topic", "identity"));
         assertEquals(consumerResult.status(), ConsumerResult.ConsumeStatus.TOPIC_DOES_NOT_EXIST);
     }
 
     @Test
-    void shouldBeAbleToAddTopic() {
+    public void shouldBeAbleToAddTopic() {
         var kafka = new Kafka();
         kafka.addTopic("topic", 8);
 
@@ -48,14 +48,14 @@ class KafkaTest {
     }
 
     @Test
-    void shouldNotBeAbleToSupplyUnexcitingTopic() {
+    public void shouldNotBeAbleToSupplyUnexcitingTopic() {
         var kafka = new Kafka();
         var supplyResult = kafka.supply(new Supplier("topic", new Message("id", "content")));
         assertEquals(supplyResult.status(), SupplyResult.SupplyStatus.TOPIC_DOES_NOT_EXIST);
     }
 
     @Test
-    void shouldBeAbleToSupplyExcitingTopic() {
+    public void shouldBeAbleToSupplyExcitingTopic() {
         var kafka = new Kafka();
         kafka.addTopic("topic", 8);
 
@@ -65,21 +65,21 @@ class KafkaTest {
     }
 
     @Test
-    void shouldNotBeAbleToConnectToUnexcitingTopic() {
+    public void shouldNotBeAbleToConnectToUnexcitingTopic() {
         var kafka = new Kafka();
         var consumerConnectResult = kafka.connect(new Consumer("topic", "identit"));
         assertEquals(consumerConnectResult.status, ConsumerConnectResult.ConsumerConnectStatus.TOPIC_DOES_NOT_EXIST);
     }
 
     @Test
-    void shouldNotBeAbleToDisconnectToUnexcitingTopic() {
+    public void shouldNotBeAbleToDisconnectToUnexcitingTopic() {
         var kafka = new Kafka();
         var consumerConnectResult = kafka.disconnect(new Consumer("topic", "identity"));
         assertEquals(consumerConnectResult.status, ConsumerConnectResult.ConsumerConnectStatus.TOPIC_DOES_NOT_EXIST);
     }
 
     @Test
-    void shouldBeAbleToConnectToTopic() {
+    public void shouldBeAbleToConnectToTopic() {
         var kafka = new Kafka();
         kafka.addTopic("topic", 8);
 
@@ -88,7 +88,7 @@ class KafkaTest {
     }
 
     @Test
-    void shouldNotBeAbleToConnectTwiceToTopic() {
+    public void shouldNotBeAbleToConnectTwiceToTopic() {
         var kafka = new Kafka();
         kafka.addTopic("topic", 8);
 
@@ -99,7 +99,7 @@ class KafkaTest {
     }
 
     @Test
-    void shouldBeAbleToDisconnect() {
+    public void shouldBeAbleToDisconnect() {
         var kafka = new Kafka();
         kafka.addTopic("topic", 8);
 
@@ -110,7 +110,7 @@ class KafkaTest {
     }
 
     @Test
-    void shouldNotBeAbleToDisconnectWhenNotConnected() {
+    public void shouldNotBeAbleToDisconnectWhenNotConnected() {
         var kafka = new Kafka();
         kafka.addTopic("topic", 8);
 
@@ -119,7 +119,7 @@ class KafkaTest {
     }
 
     @Test
-    void shouldBeAbleToConsumeMessage() {
+    public void shouldBeAbleToConsumeMessage() {
         var kafka = new Kafka();
         kafka.addTopic("topic", 8);
 

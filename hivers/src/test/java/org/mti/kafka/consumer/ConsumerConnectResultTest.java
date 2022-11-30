@@ -5,10 +5,10 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-class ConsumerConnectResultTest {
+public class ConsumerConnectResultTest {
 
     @Test
-    void shouldBeAbleToCreateConsumerConnectResult() {
+    public void shouldBeAbleToCreateConsumerConnectResult() {
         var consumerConnectResult = new ConsumerConnectResult(ConsumerConnectResult.ConsumerConnectStatus.SUCCESS);
         assertNotNull(consumerConnectResult);
         assertEquals(consumerConnectResult.status, ConsumerConnectResult.ConsumerConnectStatus.SUCCESS);

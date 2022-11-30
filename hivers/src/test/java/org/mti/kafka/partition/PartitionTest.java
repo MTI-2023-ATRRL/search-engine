@@ -5,21 +5,21 @@ import org.mti.kafka.message.Message;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class PartitionTest {
+public class PartitionTest {
     @Test
-    void shouldBeAbleToCreatePartition() {
+    public void shouldBeAbleToCreatePartition() {
         var partition = new Partition();
         assertNotNull(partition);
     }
 
     @Test
-    void shouldnotBeAbleToConsumeWhenNoMessage() {
+    public void shouldnotBeAbleToConsumeWhenNoMessage() {
         var partition = new Partition();
         assertTrue(partition.consume().isEmpty());
     }
 
     @Test
-    void shouldBeAbleToSupplyAndConsumeMessage() {
+    public void shouldBeAbleToSupplyAndConsumeMessage() {
         var message = new Message("0", "Bonsoir");
         var partition = new Partition();
 
@@ -31,7 +31,7 @@ class PartitionTest {
     }
 
     @Test
-    void shouldGetFirstMessage() {
+    public void shouldGetFirstMessage() {
         var m1 = new Message("1", "Bonjour");
         var m2 = new Message("2", "Bonsoir");
 

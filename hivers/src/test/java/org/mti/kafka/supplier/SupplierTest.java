@@ -6,9 +6,9 @@ import org.mti.kafka.message.Message;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-class SupplierTest {
+public class SupplierTest {
     @Test
-    void shouldBeAbleToCreateSupplier() {
+    public void shouldBeAbleToCreateSupplier() {
         var supplier = new Supplier("topic", new Message("id", "content"));
         assertNotNull(supplier);
         assertEquals(supplier.topicName, "topic");

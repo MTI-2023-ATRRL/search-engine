@@ -5,10 +5,10 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-class MessageTest {
+public class MessageTest {
 
     @Test
-    void shouldBeAbleToCreateMessage() {
+    public void shouldBeAbleToCreateMessage() {
         var m = new Message("0", "test");
         assertNotNull(m);
         assertEquals(m.id, "0");
