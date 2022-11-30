@@ -52,47 +52,46 @@ public class Topic {
             return new ConsumerConnectResult(ConsumerConnectResult.ConsumerConnectStatus.UNABLE_TO_CONNECT);
         }
 
-        if (this.connectedConsumerMap.size() == 0) {
-            var copyPartition = new ArrayList<Partition>();
-            for (var partition : partitions) {
-                copyPartition.add(partition);
-            }
+        var connectedConsumer = new ConnectedConsumer(consumer.identity);
+        this.connectedConsumerMap.put(consumer.identity, connectedConsumer);
 
-            var connectedConsumer = new ConnectedConsumer(consumer.identity, partitions);
-            this.connectedConsumerMap.put(consumer.identity, connectedConsumer);
+        if (connectedConsumerMap.size() == 1) {
+            this.connectedConsumerMap.get(connectedConsumer.identity).setPartitions(partitions);
+            return new ConsumerConnectResult(ConsumerConnectResult.ConsumerConnectStatus.SUCCESS);
+        }
 
-            var ratio = (float) partitionSize / connectedConsumerMap.size();
+        var ratio = (double) partitionSize / connectedConsumerMap.size();
 
-
-            while (!isRatioVerifiedPerConsumer(ratio)) {
-                for (var c : connectedConsumerMap.values()) {
-                    var partitions = c.getPartitions();
-                    if (removeGreaterThanRatio(partitions.size(), ratio)) {
-                        var partitionToSwap = c.popLastPartition();
-                        addPartitionToConsumer(partitionToSwap, ratio);
-                        break;
-                    }
+        while (!isRatioVerifiedPerConsumer(ratio)) {
+            for (var c : connectedConsumerMap.values()) {
+                var partitions = c.getPartitions();
+                if (removeGreaterThanRatio(partitions.size(), ratio)) {
+                    var partitionToSwap = c.popLastPartition();
+                    addPartitionToConsumer(partitionToSwap, ratio);
+                    break;
                 }
             }
         }
 
+
         return new ConsumerConnectResult(ConsumerConnectResult.ConsumerConnectStatus.SUCCESS);
     }
 
-    private boolean isRatioVerifiedPerConsumer(float ratio) {
+    private boolean isRatioVerifiedPerConsumer(double ratio) {
         for (var consumer : connectedConsumerMap.values()) {
             var partitionsSize = consumer.getPartitions().size();
-            if (partitionsSize < ratio - 1 || partitionsSize > ratio + 1)
+            if (partitionsSize < Math.floor(ratio) || partitionsSize > Math.ceil(ratio)) {
                 return false;
+            }
         }
         return true;
     }
 
-    private boolean removeGreaterThanRatio(int size, float ratio) {
-        return size > ratio + 1;
+    private boolean removeGreaterThanRatio(int size, double ratio) {
+        return size > Math.ceil(ratio);
     }
 
-    private void addPartitionToConsumer(Partition partition, float ratio) {
+    private void addPartitionToConsumer(Partition partition, double ratio) {
         for (var consumer : connectedConsumerMap.values()) {
             if (consumer.getPartitions().size() < ratio)
                 consumer.addPartition(partition);
