@@ -3,6 +3,7 @@ package org.mti.kafka.consumer;
 import org.mti.kafka.message.Message;
 import org.mti.kafka.partition.Partition;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -10,9 +11,9 @@ public class ConnectedConsumer {
     public final String identity;
     private List<Partition> partitions;
 
-    public ConnectedConsumer(String identity, List<Partition> partitions) {
+    public ConnectedConsumer(String identity) {
         this.identity = identity;
-        this.partitions = partitions;
+        this.partitions = new ArrayList<>();
     }
 
     public Optional<Message> consume() {
@@ -27,6 +28,10 @@ public class ConnectedConsumer {
 
     public List<Partition> getPartitions() {
         return partitions;
+    }
+
+    public void setPartitions(List<Partition> partitions) {
+        this.partitions = partitions;
     }
 
     public void addPartition(Partition partition) {
