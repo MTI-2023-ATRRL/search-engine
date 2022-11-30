@@ -7,14 +7,10 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 class VectorTest {
-    private final Vector vector;
-
-    public VectorTest() {
-        this.vector = new Vector();
-    }
 
     @Test
     void shouldGetCountBasedOnTokenList() {
+        var vector = new Vector();
         var tokens = List.of("blue", "rabbit", "fish", "blue", "river");
 
         var tokensCount = vector.count(tokens);

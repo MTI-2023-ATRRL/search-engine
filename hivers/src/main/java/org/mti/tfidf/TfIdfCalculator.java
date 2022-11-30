@@ -2,15 +2,14 @@ package org.mti.tfidf;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 public class TfIdfCalculator {
-    public class DocumnentWithScore {
+    public class DocumentWithScore {
         public Document document;
         public double score;
 
-        public DocumnentWithScore(Document document, double score) {
+        public DocumentWithScore(Document document, double score) {
             this.document = document;
             this.score = score;
         }
@@ -36,6 +35,16 @@ public class TfIdfCalculator {
         return tfs.stream().map(tf -> tf * idf).toList();
     }
 
+    private List<Double> getTfInDocument(Document queryDocument, Document matchedDoc)
+    {
+        List<Double> tfs = new ArrayList<>();
+        for (var term: queryDocument.getWordFrequencyList()) {
+            tfs.add(calculateTf(term.word, matchedDoc));
+        }
+
+        return tfs;
+    }
+
     public List<Document> createTfIdfVectorForQuery(Document queryDocument, RetroIndex retroIndex) {
         var idf = calculateIdf(queryDocument, retroIndex);
 
@@ -45,22 +54,16 @@ public class TfIdfCalculator {
         }
         List<Double> tfIdfOfTheQueryDocument =  calculateTfIdf(tfOfTheQueryDocument, idf);
 
-        var bestDocsWithComputation = new ArrayList<DocumnentWithScore>();
+        var bestDocsWithComputation = new ArrayList<DocumentWithScore>();
         for (var matchedDoc: retroIndex.getMatchingDocument(queryDocument)) {
-            List<Double> tfs = new ArrayList<>();
-            for (var term: queryDocument.getWordFrequencyList()) {
-                tfs.add(calculateTf(term.word, matchedDoc));
-            }
+            List<Double> tfs = getTfInDocument(queryDocument, matchedDoc);
             List<Double> vectorTfIdf = calculateTfIdf(tfs, idf);
             double computedCosSim = ComputeSimilarity(vectorTfIdf, tfIdfOfTheQueryDocument);
-            bestDocsWithComputation.add(new DocumnentWithScore(matchedDoc, computedCosSim));
+            bestDocsWithComputation.add(new DocumentWithScore(matchedDoc, computedCosSim));
         }
 
         Collections.sort(bestDocsWithComputation, (d1, d2) -> {
-            if (d1.score < d2.score) {
-                return 0;
-            }
-            return 1;
+            return d1.score < d2.score ? 0 : 1;
         });
 
         return bestDocsWithComputation.stream().map((d) -> d.document).toList();

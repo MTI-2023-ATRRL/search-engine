@@ -19,16 +19,20 @@ public class RetroIndex {
         corpusSize += 1;
     }
 
+    private void getMatchingDocumentsForWord(Set<Document> matchingDocuments, String word) {
+        if (dictionary.containsKey(word)) {
+            var documentMatchedList = dictionary.get(word);
+            for (var documentMatched: documentMatchedList) {
+                matchingDocuments.add(documentMatched);
+            }
+        }
+    }
+
     public List<Document> getMatchingDocument(Document document) {
         Set<Document> matchingDocuments = new HashSet<>();
         for (WordFrequency wordFrequency: document.getWordFrequencyList()) {
             var word = wordFrequency.word;
-            if (dictionary.containsKey(word)) {
-                var documentMatchedList = dictionary.get(word);
-                for (var documentMatched: documentMatchedList) {
-                    matchingDocuments.add(documentMatched);
-                }
-            }
+            getMatchingDocumentsForWord(matchingDocuments, word);
         }
 
         List<Document> documents = new ArrayList<>(matchingDocuments);

@@ -1,4 +1,3 @@
-
 package org.mti.hivers;
 
 import org.junit.jupiter.api.Test;
