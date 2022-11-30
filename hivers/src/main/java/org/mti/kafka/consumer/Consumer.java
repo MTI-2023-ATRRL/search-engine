@@ -1,4 +1,4 @@
-package org.mti.kafka;
+package org.mti.kafka.consumer;
 
 public class Consumer {
     public final String topicName;

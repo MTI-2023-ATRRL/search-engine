@@ -1,4 +1,4 @@
-package org.mti.kafka;
+package org.mti.kafka.supplier;
 
 public record SupplyResult(SupplyStatus status) {
     public enum SupplyStatus {

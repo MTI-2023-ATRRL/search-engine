@@ -1,4 +1,4 @@
-package org.mti.kafka;
+package org.mti.kafka.consumer;
 
 public record ConsumeResult(ConsumeStatus status, String id, String content) {
     public enum ConsumeStatus {

@@ -1,5 +1,8 @@
 package org.mti.kafka;
 
+import org.mti.kafka.consumer.ConnectedConsumer;
+import org.mti.kafka.consumer.Consumer;
+
 import java.util.*;
 
 public class Topic {

@@ -1,5 +1,9 @@
 package org.mti.kafka;
 
+import org.mti.kafka.consumer.Consumer;
+import org.mti.kafka.supplier.Supplier;
+import org.mti.kafka.supplier.SupplyResult;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
@@ -66,7 +70,5 @@ public class Kafka {
         } catch (Error err) {
             // TODO: Tell the user that the topics does not exist
         }
-
-
     }
 }
