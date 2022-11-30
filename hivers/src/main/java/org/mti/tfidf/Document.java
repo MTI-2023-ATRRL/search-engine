@@ -7,6 +7,10 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 public class Document {
+    public String getResource() {
+        return resource;
+    }
+
     private final String resource;
     private final List<WordFrequency> wordFrequencyList;
     public Map<String, WordFrequency> wordFrequencyMap;
