@@ -73,7 +73,6 @@ public class Topic {
             }
         }
 
-
         return new ConsumerConnectResult(ConsumerConnectResult.ConsumerConnectStatus.SUCCESS);
     }
 
@@ -103,7 +102,22 @@ public class Topic {
             return new ConsumerConnectResult(ConsumerConnectResult.ConsumerConnectStatus.NOT_CONNECTED);
         }
 
+        var partitionsToBalance = connectedConsumerMap.get(consumer.identity).getPartitions();
         this.connectedConsumerMap.remove(consumer.identity);
+        
+        if (connectedConsumerMap.size() == 0)
+            return new ConsumerConnectResult(ConsumerConnectResult.ConsumerConnectStatus.SUCCESS);
+
+        var consumers = new ArrayList<>(connectedConsumerMap.values().stream().toList());
+        consumers.sort((first, second) -> (first.getPartitions().size() < second.getPartitions().size()) ? 1 : 0);
+
+        while (!partitionsToBalance.isEmpty()) {
+            for (var c : consumers) {
+                if (partitionsToBalance.isEmpty()) break;
+                c.addPartition(partitionsToBalance.remove(0));
+            }
+        }
+
         return new ConsumerConnectResult(ConsumerConnectResult.ConsumerConnectStatus.SUCCESS);
     }
 
