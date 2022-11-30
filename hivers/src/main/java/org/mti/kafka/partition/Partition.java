@@ -7,7 +7,7 @@ import java.util.Optional;
 import java.util.Queue;
 
 public class Partition {
-    public final Queue<Message> messages;
+    private final Queue<Message> messages;
 
     public Partition() {
         this.messages = new LinkedList<>();
