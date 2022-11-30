@@ -9,10 +9,10 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class TfIdfCalculatorTest {
+public class TfIdfCalculatorTest {
 
     @Test
-    void calculateTf_shouldReturnZeroIfTokenAbsent() {
+    public void calculateTf_shouldReturnZeroIfTokenAbsent() {
         var calculator = new TfIdfCalculator();
 
         List<WordFrequency> wfs = new ArrayList<>();
@@ -23,7 +23,7 @@ class TfIdfCalculatorTest {
     }
 
     @Test
-    void calculateTf_shouldReturnTFIfTokenPresent() {
+    public void calculateTf_shouldReturnTFIfTokenPresent() {
         var calculator = new TfIdfCalculator();
 
         List<WordFrequency> wfs = new ArrayList<>();
@@ -35,7 +35,7 @@ class TfIdfCalculatorTest {
     }
 
     @Test
-    void calculateIdf_shouldCalculateIdf() {
+    public void calculateIdf_shouldCalculateIdf() {
         var calculator = new TfIdfCalculator();
         var retroIndex = new RetroIndex();
 
@@ -69,7 +69,7 @@ class TfIdfCalculatorTest {
     }
 
     @Test
-    void calculateTfIdf() {
+    public void calculateTfIdf() {
         var calculator = new TfIdfCalculator();
         List<Double> tfs = Arrays.asList(2.0/38.0, 14.0/4.0, 46.0/32.0);
         var idf = Math.log(2.0/3.0);
@@ -84,7 +84,7 @@ class TfIdfCalculatorTest {
     }
 
     @Test
-    void createTfIdfVectorForQuery() {
+    public void createTfIdfVectorForQuery() {
         var indexer = new Indexer();
 
         var resource1 = "Bonsoir et bienvenue dans le super jeu trop cool";

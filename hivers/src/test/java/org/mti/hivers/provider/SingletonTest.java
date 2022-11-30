@@ -5,7 +5,7 @@ import org.mti.hivers.provider.Singleton;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class SingletonTest {
+public class SingletonTest {
 
     public static class PingService {
         PingService() {}
@@ -13,38 +13,38 @@ class SingletonTest {
     }
 
     @Test
-    void shouldCreateSingleton() {
+    public void shouldCreateSingleton() {
         var singleton = new Singleton<>(PingService.class, new PingService());
         assertNotNull(singleton);
     }
 
     @Test
-    void shouldBeAbleToCreateAndRetrieveSingleton() {
+    public void shouldBeAbleToCreateAndRetrieveSingleton() {
         var singleton = new Singleton<>(PingService.class, new PingService());
         assertNotNull(singleton.getValue());
     }
 
     @Test
-    void shouldBeAbleToCreateAndRetrieveAndUseIt() {
+    public void shouldBeAbleToCreateAndRetrieveAndUseIt() {
         var singleton = new Singleton<>(PingService.class, new PingService());
         assertEquals(singleton.getValue().ping(), "Ping");
     }
 
     @Test
-    void shouldBeAbleToCreateWithLamba() {
+    public void shouldBeAbleToCreateWithLamba() {
         var singleton = new Singleton<>(PingService.class, PingService::new);
         var pingService = singleton.getValue();
         assertNotNull(pingService);
     }
 
     @Test
-    void shouldOnlyCreateOneInstance() {
+    public void shouldOnlyCreateOneInstance() {
         var singleton = new Singleton<>(PingService.class, PingService::new);
         assertEquals(singleton.getValue(), singleton.getValue());
     }
 
     @Test
-    void test() {
+    public void test() {
         var singleton = new Singleton<>(PingService.class, PingService::new);
     }
 }

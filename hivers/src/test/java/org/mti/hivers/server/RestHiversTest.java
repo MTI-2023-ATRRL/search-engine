@@ -6,7 +6,7 @@ import static org.junit.jupiter.api.Assertions.*;
 public class RestHiversTest {
 
     @Test
-    void shouldRegisterRoute() {
+    public void shouldRegisterRoute() {
         var rest = new RestHivers();
         assertNotNull(rest);
 

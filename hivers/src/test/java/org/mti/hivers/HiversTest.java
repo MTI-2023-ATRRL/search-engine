@@ -9,7 +9,7 @@ import org.mti.hivers.proxy.ProxyDefinition;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class HiversTest {
+public class HiversTest {
 
     public void times(Integer max, Runnable runnable) {
         for (var i = 0; i < max; i++) {
@@ -74,6 +74,7 @@ class HiversTest {
 
 //        // Extension
 //        hivers.push(new DefaultScope());
+        /*
         hivers.register(new RestHivers());
         hivers.extension(RestHivers.class)
                 .register(RestHivers.Method.GET, "/hello", context -> context.response(200, "Hello, world!"))
@@ -82,6 +83,8 @@ class HiversTest {
                     context.response(204);
                 })
                 .start();
+
+         */
 
     }
 

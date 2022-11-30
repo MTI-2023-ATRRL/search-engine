@@ -6,10 +6,10 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class VectorTest {
+public class VectorTest {
 
     @Test
-    void shouldGetCountBasedOnTokenList() {
+    public void shouldGetCountBasedOnTokenList() {
         var vector = new Vector();
         var tokens = List.of("blue", "rabbit", "fish", "blue", "river");
 

@@ -13,19 +13,19 @@ public class ScopeTest {
     }
 
     @Test
-    void shouldBeAbleToCreateAScope() {
+    public void shouldBeAbleToCreateAScope() {
         Scope scope = new Scope();
         assertNotNull(scope);
     }
 
     @Test
-    void shouldGetNullWhenAskingForAnUnsetProvider() {
+    public void shouldGetNullWhenAskingForAnUnsetProvider() {
         Scope scope = new Scope();
         assertTrue(scope.getProvider(PingService.class).isEmpty());
     }
 
     @Test
-    void shouldGetProviderWhenSettingProvider() {
+    public void shouldGetProviderWhenSettingProvider() {
         Scope scope = new Scope();
         scope.setProvider(PingService.class, new Singleton(PingService.class, PingService::new));
         assertTrue(scope.getProvider(PingService.class).isPresent());

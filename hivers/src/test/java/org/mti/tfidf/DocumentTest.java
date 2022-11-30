@@ -7,21 +7,21 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class DocumentTest {
+public class DocumentTest {
     @Test
-    void shouldBeAbleToCreateDocument() {
+    public void shouldBeAbleToCreateDocument() {
         var doc = new Document("test", new ArrayList<>());
         assertNotNull(doc);
     }
 
     @Test
-    void shouldBeAbleToGetListWordFrequency() {
+    public void shouldBeAbleToGetListWordFrequency() {
         var doc = new Document("test", new ArrayList<>());
         assertTrue(doc.getWordFrequencyList().isEmpty());
     }
 
     @Test
-    void shouldBeAbleToSearchInTheMap() {
+    public void shouldBeAbleToSearchInTheMap() {
         List<WordFrequency> wfs = new ArrayList<>();
         wfs.add(new WordFrequency("test", 0.5, new ArrayList<>()));
 

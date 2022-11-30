@@ -4,16 +4,16 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class QueryTest {
+public class QueryTest {
 
     @Test
-    void shouldBeAbleToCreateQuery() {
+    public void shouldBeAbleToCreateQuery() {
         var query = new Query("test");
         assertNotNull(query);
     }
 
     @Test
-    void shouldBeAbleToGetDocumentFromQuery() {
+    public void shouldBeAbleToGetDocumentFromQuery() {
         var query = new Query("test");
         var doc = query.getDocument();
         assertEquals(doc.wordFrequencyMap.size(), 1);

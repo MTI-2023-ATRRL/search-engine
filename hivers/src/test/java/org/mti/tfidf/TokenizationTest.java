@@ -6,16 +6,16 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class TokenizationTest {
+public class TokenizationTest {
     @Test
-    void shouldSplitEmptyTextToTokens() {
+    public void shouldSplitEmptyTextToTokens() {
         var tokenization = new Tokenization();
         var tokens = tokenization.textToTokens("");
         assertTrue(tokens.isEmpty());
     }
 
     @Test
-    void shouldSplitTextToTokens() {
+    public void shouldSplitTextToTokens() {
         var tokenization = new Tokenization();
         String text = "The blue rabbit is fishing in a blue river.";
         var tokens = tokenization.textToTokens(text);
