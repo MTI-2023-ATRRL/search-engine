@@ -14,6 +14,4 @@ public class Query {
         var vectorCount = vector.count(tokens);
         return new Document(this.query, vectorCount);
     }
-
-
 }
