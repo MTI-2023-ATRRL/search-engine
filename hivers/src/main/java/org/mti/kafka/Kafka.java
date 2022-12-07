@@ -76,4 +76,8 @@ public class Kafka {
             return new ConsumerConnectResult(ConsumerConnectResult.ConsumerConnectStatus.TOPIC_DOES_NOT_EXIST);
         }
     }
+
+    public Map<String, Topic> getTopics() {
+        return topics;
+    }
 }

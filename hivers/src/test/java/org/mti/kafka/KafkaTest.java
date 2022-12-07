@@ -24,7 +24,7 @@ class KafkaTest {
 
         try {
             kafka.addTopic("topic", 12);
-            assertTrue(false);
+            fail();
         } catch (Error err) {
             assertTrue(true);
         }
@@ -121,16 +121,22 @@ class KafkaTest {
     @Test
     void shouldBeAbleToConsumeMessage() {
         var kafka = new Kafka();
-        kafka.addTopic("topic", 8);
+        var topicName = "topic";
+        var consumerIdentity = "identity";
+        kafka.addTopic(topicName, 8);
 
-        var supplier = new Supplier("topic", new Message("id", "content"));
+        var supplier = new Supplier(topicName, new Message("id", "content"));
         kafka.supply(supplier);
 
-        var consumer = new Consumer("topic", "identity");
+        var consumer = new Consumer(topicName, consumerIdentity);
         kafka.connect(consumer);
+
+        var partitions = kafka.getTopics().get(topicName).connectedConsumerMap.get(consumerIdentity).getPartitions();
+        var partition = partitions.stream().filter(x -> x.getMessages().size() > 0).toList().stream().findFirst().get();
 
         var consumerResult = kafka.consume(consumer);
         assertEquals(consumerResult.status(), ConsumerResult.ConsumeStatus.SUCCESS);
         assertEquals(consumerResult.id(), "id");
+        assertNotEquals(0, partition.getMessages().size());
     }
 }
