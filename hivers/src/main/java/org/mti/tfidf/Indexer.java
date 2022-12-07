@@ -12,7 +12,7 @@ public class Indexer {
         this.documents = new ArrayList<>();
     }
 
-    public void addDocument(TransportLayer transportLayer) {
+    public Document addDocument(TransportLayer transportLayer) {
         try {
             var body = transportLayer.getText();
 
@@ -21,9 +21,14 @@ public class Indexer {
 
             var vector = new Vector();
             var vectorCount = vector.count(tokens);
-            documents.add(new Document(body, vectorCount));
+            var doc = new Document(body, vectorCount);
+            documents.add(doc);
+
+            return doc;
+
         } catch (Exception e) {
             System.err.println("transport error");
+            return null;
         }
     }
 
