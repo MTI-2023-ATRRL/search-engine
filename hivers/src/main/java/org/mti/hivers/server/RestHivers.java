@@ -93,5 +93,4 @@ public class RestHivers implements Extension {
     public void shutdown() {
         stop();
     }
-
 }

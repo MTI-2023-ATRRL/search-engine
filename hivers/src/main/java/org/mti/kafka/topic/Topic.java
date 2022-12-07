@@ -3,6 +3,7 @@ package org.mti.kafka.topic;
 import org.mti.kafka.consumer.ConnectedConsumer;
 import org.mti.kafka.consumer.Consumer;
 import org.mti.kafka.consumer.ConsumerConnectResult;
+import org.mti.kafka.consumer.ConsumerResult;
 import org.mti.kafka.message.Message;
 import org.mti.kafka.partition.Partition;
 
@@ -36,11 +37,15 @@ public class Topic {
         this.partitions.get(chosenPartition).supply(message);
     }
 
-    public Optional<Message> consume(Consumer consumer) {
-        if (!connectedConsumerMap.containsKey(consumer.identity)) return Optional.empty();
+    public ConsumerResult consume(Consumer consumer) {
+        if (!connectedConsumerMap.containsKey(consumer.identity)) return new ConsumerResult(ConsumerResult.ConsumeStatus.NO_CONNECTED_TO_THIS_TOPIC, null , null);
 
         var connectedConsumer = connectedConsumerMap.get(consumer.identity);
-        return connectedConsumer.consume();
+        var result = connectedConsumer.consume();
+        if (result.isEmpty()) {
+            return new ConsumerResult(ConsumerResult.ConsumeStatus.NO_MESSAGE_AVAILABLE, null, null);
+        }
+        return new ConsumerResult(ConsumerResult.ConsumeStatus.SUCCESS, result.get().id, result.get().content);
     }
 
     public ConsumerConnectResult connect(Consumer consumer) {

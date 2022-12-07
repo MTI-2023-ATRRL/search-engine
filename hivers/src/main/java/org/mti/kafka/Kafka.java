@@ -51,11 +51,7 @@ public class Kafka {
     public ConsumerResult consume(Consumer consumer) {
         try {
             var topic = this.getTopic(consumer.topicName);
-            var message = topic.consume(consumer);
-            if (message.isEmpty()) {
-                return new ConsumerResult(ConsumerResult.ConsumeStatus.NO_MESSAGE_AVAILABLE, null, null);
-            }
-            return new ConsumerResult(ConsumerResult.ConsumeStatus.SUCCESS, message.get().id, message.get().content);
+            return topic.consume(consumer);
         } catch (Error err) {
             return new ConsumerResult(ConsumerResult.ConsumeStatus.TOPIC_DOES_NOT_EXIST, null, null);
         }

@@ -5,6 +5,7 @@ public record ConsumerResult(ConsumeStatus status, String id, String content) {
         SUCCESS,
         TOPIC_DOES_NOT_EXIST,
         NO_MESSAGE_AVAILABLE,
+        NO_CONNECTED_TO_THIS_TOPIC,
     }
 
 }
