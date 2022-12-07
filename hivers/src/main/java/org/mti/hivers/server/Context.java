@@ -39,27 +39,12 @@ public class Context {
             this.queryParams.put(queryParam, queryParamValue);
         });
 
-        /*
-        request.queryParams().stream().forEach(queryParam -> {
-            var separateQuery = queryParam.split(":");
-            this.queryParams.put(separateQuery[0], separateQuery[1]);
-        });
-         */
-
         this.headers = new HashMap<>();
         var headers = request.headers();
         headers.forEach(header -> {
             var headerValue = request.headers(header);
             this.headers.put(header, headerValue);
         });
-
-        /*
-        request.headers().stream().forEach(header -> {
-            var separatedHeader = header.split(":");
-            this.headers.put(separatedHeader[0], separatedHeader[1]);
-        });
-
-         */
     }
 
     public Optional<String> getHeaderValue(String header) {

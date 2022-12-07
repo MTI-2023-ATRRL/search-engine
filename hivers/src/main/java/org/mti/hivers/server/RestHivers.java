@@ -4,7 +4,6 @@ import spark.Request;
 import spark.Response;
 import spark.Spark;
 
-import java.io.Console;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -39,22 +38,6 @@ public class RestHivers implements Extension {
         return this.routes;
     }
 
-    /*@Override
-    public RestHivers register(Extension.Method verb, String path, Function<Context, Context> callback) {
-
-        var tuple = new Tuple(path, callback);
-        var methodList = routes.get(verb);
-        if (methodList == null) {
-            methodList = new ArrayList<>();
-        }
-
-        methodList.add(tuple);
-
-        routes.put((Method) verb, methodList);
-
-        return this;
-    }*/
-
     @Override
     public RestHivers register(Extension.Method verb, String path, Consumer<Context> callback) {
         var tuple = new Tuple(path, callback);
@@ -64,7 +47,6 @@ public class RestHivers implements Extension {
         }
 
         methodList.add(tuple);
-
         routes.put((Method) verb, methodList);
 
         return this;
