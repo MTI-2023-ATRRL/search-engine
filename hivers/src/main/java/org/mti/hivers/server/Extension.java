@@ -7,4 +7,5 @@ public interface Extension {
     Extension register(Method verb, String path, Consumer<Context> callback);
     void start();
     void shutdown();
+    Extension port(int port);
 }

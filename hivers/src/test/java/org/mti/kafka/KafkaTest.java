@@ -44,7 +44,7 @@ class KafkaTest {
         kafka.addTopic("topic", 8);
 
         var consumerResult = kafka.consume(new Consumer("topic", "identity"));
-        assertEquals(consumerResult.status(), ConsumerResult.ConsumeStatus.NO_MESSAGE_AVAILABLE);
+        assertEquals(consumerResult.status(), ConsumerResult.ConsumeStatus.NO_CONNECTED_TO_THIS_TOPIC);
     }
 
     @Test
@@ -138,5 +138,16 @@ class KafkaTest {
         assertEquals(consumerResult.status(), ConsumerResult.ConsumeStatus.SUCCESS);
         assertEquals(consumerResult.id(), "id");
         assertNotEquals(0, partition.getMessages().size());
+    }
+
+    @Test
+    void shouldNotGetMessageWhenNotAvailable() {
+        var kafka = new Kafka();
+        kafka.addTopic("topic", 8);
+
+        var consumer = new Consumer("topic", "identity");
+        kafka.connect(consumer);
+        var consumerResult = kafka.consume(consumer);
+        assertEquals(consumerResult.status(), ConsumerResult.ConsumeStatus.NO_MESSAGE_AVAILABLE);
     }
 }

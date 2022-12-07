@@ -31,7 +31,7 @@ public class ConnectedConsumer {
     }
 
     public void setPartitions(List<Partition> partitions) {
-        this.partitions = partitions;
+        this.partitions = new ArrayList<>(partitions);
     }
 
     public void addPartition(Partition partition) {
