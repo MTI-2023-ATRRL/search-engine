@@ -6,6 +6,7 @@ import org.jsoup.nodes.Document;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.List;
 
 public class TransportLayerHttp implements TransportLayer {
     private final URL url;
@@ -17,6 +18,15 @@ public class TransportLayerHttp implements TransportLayer {
     @Override
     public String getText() throws IOException {
         return this.urlToRawText(url);
+    }
+
+    public List<String> getLinksInDocument() throws IOException {
+        Document doc = Jsoup.parse(url, 10000);
+
+        var linksAsElements = doc.select("a");
+        return linksAsElements.stream()
+                .map(element -> element.attr("href"))
+                .toList();
     }
 
     private String urlToRawText(URL url) throws IOException {

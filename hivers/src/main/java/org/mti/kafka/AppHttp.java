@@ -20,7 +20,7 @@ public class AppHttp {
 
         hivers.register(new RestHivers());
         hivers.extension(RestHivers.class)
-                .register(RestHivers.Method.POST, "/topic",  context -> {
+                .register(RestHivers.Method.POST, "/topic", context -> {
                     try {
                         app.AddTopic(context);
                     } catch (JsonProcessingException e) {
@@ -71,7 +71,8 @@ public class AppHttp {
         public String topicName;
         public int numberOfPartition;
 
-        public CreateTopicDto() {}
+        public CreateTopicDto() {
+        }
 
         public CreateTopicDto(String topicName, int numberOfPartition) {
             this.topicName = topicName;

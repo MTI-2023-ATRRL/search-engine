@@ -35,10 +35,9 @@ public class TfIdfCalculator {
         return tfs.stream().map(tf -> tf * idf).toList();
     }
 
-    private List<Double> getTfInDocument(Document queryDocument, Document matchedDoc)
-    {
+    private List<Double> getTfInDocument(Document queryDocument, Document matchedDoc) {
         List<Double> tfs = new ArrayList<>();
-        for (var term: queryDocument.getWordFrequencyList()) {
+        for (var term : queryDocument.getWordFrequencyList()) {
             tfs.add(calculateTf(term.word, matchedDoc));
         }
 
@@ -49,13 +48,13 @@ public class TfIdfCalculator {
         var idf = calculateIdf(queryDocument, retroIndex);
 
         List<Double> tfOfTheQueryDocument = new ArrayList<>();
-        for (var term: queryDocument.getWordFrequencyList()) {
+        for (var term : queryDocument.getWordFrequencyList()) {
             tfOfTheQueryDocument.add(calculateTf(term.word, queryDocument));
         }
-        List<Double> tfIdfOfTheQueryDocument =  calculateTfIdf(tfOfTheQueryDocument, idf);
+        List<Double> tfIdfOfTheQueryDocument = calculateTfIdf(tfOfTheQueryDocument, idf);
 
         var bestDocsWithComputation = new ArrayList<DocumentWithScore>();
-        for (var matchedDoc: retroIndex.getMatchingDocument(queryDocument)) {
+        for (var matchedDoc : retroIndex.getMatchingDocument(queryDocument)) {
             List<Double> tfs = getTfInDocument(queryDocument, matchedDoc);
             List<Double> vectorTfIdf = calculateTfIdf(tfs, idf);
             double computedCosSim = ComputeSimilarity(vectorTfIdf, tfIdfOfTheQueryDocument);
@@ -69,17 +68,14 @@ public class TfIdfCalculator {
         return bestDocsWithComputation.stream().map((d) -> d.document).toList();
     }
 
-    private double ComputeSimilarity(List<Double> vectorQuery, List<Double> vectorDoc)
-    {
-
-        if (vectorQuery.size() != vectorQuery.size())
+    private double ComputeSimilarity(List<Double> vectorQuery, List<Double> vectorDoc) {
+        if (vectorQuery.size() != vectorDoc.size())
             throw new ArithmeticException("Product of vectors of different size is not possible");
 
         var dotProduct = 0.0;
         var euclideanDist = 0.0;
 
-        for (int i = 0; i < vectorQuery.size(); i++)
-        {
+        for (int i = 0; i < vectorQuery.size(); i++) {
             dotProduct += vectorQuery.get(i) * vectorDoc.get(i);
             var term = (vectorQuery.get(i) - vectorDoc.get(i));
             euclideanDist += term * term;
