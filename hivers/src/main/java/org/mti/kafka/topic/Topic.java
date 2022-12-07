@@ -37,7 +37,7 @@ public class Topic {
     }
 
     public Optional<Message> consume(Consumer consumer) {
-        if (connectedConsumerMap.containsKey(consumer.identity)) return Optional.empty();
+        if (!connectedConsumerMap.containsKey(consumer.identity)) return Optional.empty();
 
         var connectedConsumer = connectedConsumerMap.get(consumer.identity);
         return connectedConsumer.consume();
