@@ -6,6 +6,7 @@ import org.mti.kafka.consumer.ConsumerResult;
 import org.mti.kafka.supplier.Supplier;
 import org.mti.kafka.supplier.SupplyResult;
 import org.mti.kafka.topic.Topic;
+import org.mti.kafka.topic.TopicResult;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -17,16 +18,17 @@ public class Kafka {
         this.topics = new HashMap<>();
     }
 
-    public void addTopic(String topicName, int numberOfPartition) {
+    public TopicResult addTopic(String topicName, int numberOfPartition) {
         var topic = new Topic(topicName, numberOfPartition);
-        this.addTopic(topic);
+        return this.addTopic(topic);
     }
 
-    private void addTopic(Topic topic) {
+    private TopicResult addTopic(Topic topic) {
         if (topics.containsKey(topic.name)) {
-            throw new Error("Topic already exist");
+            return new TopicResult(TopicResult.TopicResultStatus.ALREADY_EXIST);
         }
         topics.put(topic.name, topic);
+        return new TopicResult(TopicResult.TopicResultStatus.SUCCESS);
     }
 
     private Topic getTopic(String topicName) {

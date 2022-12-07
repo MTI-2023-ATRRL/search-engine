@@ -13,7 +13,7 @@ public class Hivers {
 
     private Map<Class<?>, Extension> extensions;
 
-    Hivers() {
+    public Hivers() {
         this.scopes = new ArrayList<>();
         this.extensions = new HashMap<>();
         scopes.add(new Scope());
