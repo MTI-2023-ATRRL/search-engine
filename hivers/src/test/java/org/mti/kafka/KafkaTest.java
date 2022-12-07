@@ -130,7 +130,7 @@ class KafkaTest {
         kafka.connect(consumer);
 
         var consumerResult = kafka.consume(consumer);
-//        assertEquals(consumerResult.status(), ConsumerResult.ConsumeStatus.SUCCESS);
-//        assertEquals(consumerResult.id(), "id");
+        assertEquals(consumerResult.status(), ConsumerResult.ConsumeStatus.SUCCESS);
+        assertEquals(consumerResult.id(), "id");
     }
 }
