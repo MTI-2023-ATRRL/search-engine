@@ -4,10 +4,10 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
 import java.io.IOException;
-import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.List;
 
 public class TransportLayerFile implements TransportLayer {
     private final Path path;
@@ -20,6 +20,11 @@ public class TransportLayerFile implements TransportLayer {
     @Override
     public String getText() throws IOException {
         return this.fileToRawText(path);
+    }
+
+    @Override
+    public List<String> getLinksInDocument() {
+        return null;
     }
 
     private String fileToRawText(Path path) throws IOException {
