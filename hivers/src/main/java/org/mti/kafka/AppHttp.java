@@ -8,21 +8,6 @@ import org.mti.hivers.server.RestHivers;
 import org.mti.kafka.topic.TopicResult;
 
 public class AppHttp {
-    public static void main(String[] args) {
-        var hivers = new Hivers();
-        var app = new AppHttp();
-
-        hivers.register(new RestHivers());
-        hivers.extension(RestHivers.class)
-                .register(RestHivers.Method.POST, "/topic",  context -> {
-                    try {
-                        app.AddTopic(context);
-                    } catch (JsonProcessingException e) {
-                        throw new RuntimeException(e);
-                    }
-                }).start();
-    }
-
     private final Kafka kafka;
     private final ObjectMapper objectMapper;
 
@@ -31,16 +16,19 @@ public class AppHttp {
         this.objectMapper = new ObjectMapper();
     }
 
-    public static class CreateTopicDto {
-        public String topicName;
-        public int numberOfPartition;
+    public static void main(String[] args) {
+        var hivers = new Hivers();
+        var app = new AppHttp();
 
-        public CreateTopicDto() {}
-
-        public CreateTopicDto(String topicName, int numberOfPartition) {
-            this.topicName = topicName;
-            this.numberOfPartition = numberOfPartition;
-        }
+        hivers.register(new RestHivers());
+        hivers.extension(RestHivers.class)
+                .register(RestHivers.Method.POST, "/topic", context -> {
+                    try {
+                        app.AddTopic(context);
+                    } catch (JsonProcessingException e) {
+                        throw new RuntimeException(e);
+                    }
+                }).start();
     }
 
     public void AddTopic(Context context) throws JsonProcessingException {
@@ -53,5 +41,18 @@ public class AppHttp {
             return;
         }
         context.response(200, "Topic created");
+    }
+
+    public static class CreateTopicDto {
+        public String topicName;
+        public int numberOfPartition;
+
+        public CreateTopicDto() {
+        }
+
+        public CreateTopicDto(String topicName, int numberOfPartition) {
+            this.topicName = topicName;
+            this.numberOfPartition = numberOfPartition;
+        }
     }
 }
