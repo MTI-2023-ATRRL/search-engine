@@ -82,7 +82,7 @@ public class IndexerHttp {
     {
         URL url = null;
         try {
-            url = new URL("http://10.41.172.138:3333/" + path);
+            url = new URL("http://localhost:3333/" + path);
             HttpURLConnection con = (HttpURLConnection) url.openConnection();
             con.setRequestMethod("POST");
             con.setRequestProperty("Content-type", "application/json");
