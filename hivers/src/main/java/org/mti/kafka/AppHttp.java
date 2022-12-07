@@ -86,6 +86,7 @@ public class AppHttp {
 
         var result = kafka.addTopic(createTopicDto.topicName, createTopicDto.numberOfPartition);
         if (result.status == TopicResult.TopicResultStatus.ALREADY_EXIST) {
+            System.out.println("Return 400: Topic Already exist");
             context.response(400, "Topic Already exist");
             return;
         }
@@ -128,6 +129,7 @@ public class AppHttp {
 
         var result = kafka.connect(consumer);
         if (result.status == ConsumerConnectResult.ConsumerConnectStatus.TOPIC_DOES_NOT_EXIST) {
+            System.out.println("Return 400: Topic does not exist");
             context.response(400, "Topic does not exist");
             return;
         }
