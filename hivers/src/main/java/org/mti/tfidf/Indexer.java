@@ -16,8 +16,8 @@ public class Indexer {
         try {
             var body = transportLayer.getText();
 
-            var tokenisation = new Tokenization();
-            var tokens = tokenisation.textToTokens(body);
+            var tokenization = new Tokenization();
+            var tokens = tokenization.textToTokens(body);
 
             var vector = new Vector();
             var vectorCount = vector.count(tokens);
