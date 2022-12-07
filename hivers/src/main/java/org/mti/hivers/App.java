@@ -12,11 +12,10 @@ public class App
     {
         System.out.println( "Hello World!" );
 
-        /*var rest = new RestHivers();
+        var rest = new RestHivers();
         rest.register(RestHivers.Method.GET, "/", context ->
                         context.response(201, "Hello"))
                 .port(8888)
                 .start();
-        */
     }
 }

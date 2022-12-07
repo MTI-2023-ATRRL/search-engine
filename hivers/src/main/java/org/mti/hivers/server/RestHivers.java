@@ -4,12 +4,13 @@ import spark.Request;
 import spark.Response;
 import spark.Spark;
 
+import java.io.Console;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
-import java.util.function.Function;
+
 import static spark.Spark.*;
 
 public class RestHivers implements Extension {
@@ -31,7 +32,7 @@ public class RestHivers implements Extension {
         }
     }
 
-    private Map<Method, List<Tuple>> routes = new HashMap<>();
+    private final Map<Method, List<Tuple>> routes = new HashMap<>();
     private int port = 6437;
 
     public Map<Method, List<Tuple>> getRoutes() {
@@ -74,13 +75,12 @@ public class RestHivers implements Extension {
         return this;
     }
 
-    private Response restCallback(Request req, Response res, Tuple tuple) {
-        var context = new Context(req.headers());
+    private void restCallback(Request req, Response res, Tuple tuple) {
+        var context = new Context(req);
         tuple.callback.accept(context);
-        //var context = tuple.callback.apply(new Context());
-        res.status(context.statusCode);
-        res.body(context.body);
-        return res;
+
+        res.status(context.getStatusCode());
+        res.body(context.getResponseBody());
     }
 
     public void start() {
@@ -89,19 +89,19 @@ public class RestHivers implements Extension {
         routes.forEach((method, tuples) -> {
             switch (method) {
                 case GET -> tuples.forEach(tuple -> get(tuple.route, (req, res) -> {
-                    res = restCallback(req, res, tuple);
+                    restCallback(req, res, tuple);
                     return res.body();
                 }));
                 case PUT -> tuples.forEach(tuple -> put(tuple.route, (req, res) -> {
-                    res = restCallback(req, res, tuple);
+                    restCallback(req, res, tuple);
                     return res.body();
                 }));
                 case POST -> tuples.forEach(tuple -> post(tuple.route, (req, res) -> {
-                    res = restCallback(req, res, tuple);
+                    restCallback(req, res, tuple);
                     return res.body();
                 }));
                 case DELETE -> tuples.forEach(tuple -> delete(tuple.route, (req, res) -> {
-                    res = restCallback(req, res, tuple);
+                    restCallback(req, res, tuple);
                     return res.body();
                 }));
             }

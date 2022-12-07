@@ -1,21 +1,65 @@
 package org.mti.hivers.server;
 
+import spark.Request;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
-import java.util.Set;
 
 public class Context {
     private final Map<String, String> headers;
-    public int statusCode;
-    public String body = "";
+    private final Map<String, String> pathParams;
+    private final Map<String, String> queryParams;
 
-    public Context(Set<String> headers) {
+    public String getRequestBody() {
+        return requestBody;
+    }
+
+    private final String requestBody;
+
+    public int getStatusCode() {
+        return statusCode;
+    }
+
+    public String getResponseBody() {
+        return responseBody;
+    }
+
+    private int statusCode;
+    private String responseBody = "";
+
+    public Context(Request request) {
+        this.requestBody = request.body();
+        this.pathParams = request.params();
+
+        this.queryParams = new HashMap<>();
+        var queryParams = request.queryParams();
+        queryParams.forEach(queryParam -> {
+            var queryParamValue = request.queryParams(queryParam);
+            this.queryParams.put(queryParam, queryParamValue);
+        });
+
+        /*
+        request.queryParams().stream().forEach(queryParam -> {
+            var separateQuery = queryParam.split(":");
+            this.queryParams.put(separateQuery[0], separateQuery[1]);
+        });
+         */
+
         this.headers = new HashMap<>();
-        headers.stream().forEach(h -> {
-            var separatedHeader = h.split(":");
+        var headers = request.headers();
+        headers.forEach(header -> {
+            var headerValue = request.headers(header);
+            this.headers.put(header, headerValue);
+        });
+
+        /*
+        request.headers().stream().forEach(header -> {
+            var separatedHeader = header.split(":");
             this.headers.put(separatedHeader[0], separatedHeader[1]);
         });
+
+         */
     }
 
     public Optional<String> getHeaderValue(String header) {
@@ -23,14 +67,22 @@ public class Context {
         return Optional.ofNullable(result);
     }
 
-    public Context response(int statusCode) {
-        this.statusCode = statusCode;
-        return this;
+    public Optional<String> getPathParamValue(String param) {
+        var result = this.pathParams.get(param);
+        return Optional.ofNullable(result);
     }
 
-    public Context response(int statusCode, String body) {
+    public Optional<String> getQueryParamValue(String param) {
+        var result = this.queryParams.get(param);
+        return Optional.ofNullable(result);
+    }
+
+    public void response(int statusCode) {
         this.statusCode = statusCode;
-        this.body = body;
-        return this;
+    }
+
+    public void response(int statusCode, String body) {
+        this.statusCode = statusCode;
+        this.responseBody = body;
     }
 }
